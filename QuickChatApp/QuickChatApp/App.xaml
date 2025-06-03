@@ -4,6 +4,76 @@
              xmlns:local="clr-namespace:QuickChatApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="TextBlock"> <!--текст-->
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+            <Setter Property="FontSize" Value="32"/>
+        </Style>
+        <Style TargetType="Grid"> <!--фон-->
+            <Setter Property="Background" Value="#EEEEEE"/>
+        </Style>
+        <Style x:Key="AppTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}"> <!--Заголовок-->
+            <Setter Property="FontSize" Value="45"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#E39774"/>
+            <Setter Property="Margin" Value="0 0 0 30"/>
+        </Style>
+        <!-- Стиль для заголовка "Авторизация" -->
+        <Style x:Key="AuthTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="#5C9EAD"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0 0 0 20"/>
+        </Style>
+
+        <!-- Стиль для кнопки входа -->
+        <Style x:Key="LoginButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#5C9EAD"/>
+            <!-- Бирюзовый -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0 20 0 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для ссылки "Зарегистрироваться" -->
+        <Style x:Key="LinkTextStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="#5C9EAD"/>
+            <!-- Бирюзовый -->
+            <Setter Property="TextDecorations" Value="Underline"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+        </Style>
+
+        <!-- Стиль для текстовых полей -->
+        <Style x:Key="InputFieldStyle" TargetType="TextBox">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0 5 0 15"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#5C9EAD"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <!-- Светло-серый -->
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#5C9EAD"/>
+        </Style>
+
+        <!-- Стиль для поля пароля -->
+        <Style x:Key="PasswordFieldStyle" TargetType="PasswordBox" BasedOn="{StaticResource InputFieldStyle}">
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+        </Style>
     </Application.Resources>
 </Application>
