@@ -78,7 +78,7 @@
                     <TextBlock x:Name="PasswordHint"
                        Text="Пароль"
                        Foreground="#5C9EAD"
-                       Margin="11,0,0,5"
+                       Margin="11,0,0,0"
                        VerticalAlignment="Center"   
                        IsHitTestVisible="False"
                        FontSize="16"
