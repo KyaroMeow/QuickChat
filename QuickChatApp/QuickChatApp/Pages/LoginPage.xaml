@@ -9,15 +9,38 @@
       Title="Вход">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Center" Text="QuickChat" Style="{StaticResource AppTitleStyle}"/>
-        <StackPanel VerticalAlignment="Center" Background="#FFFFFF">
-            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Авторизация" VerticalAlignment="Top" Foreground="#5C9EAD" FontWeight="Bold" Style="{StaticResource AuthTitleStyle}"/>
-            <TextBox Style="{StaticResource InputFieldStyle}" Text="Логин"
-                 Tag="Логин"
-                 GotFocus="TextBox_GotFocus"
-                 LostFocus="TextBox_LostFocus"/>
-            <PasswordBox x:Name="PasswordBox" Width="120" />
-        </StackPanel>
+        <TextBlock Text="QuickChat" Style="{StaticResource AppTitleStyle}" HorizontalAlignment="Center" />
+        <Image />
+        <Border CornerRadius="15"
+                Background="White"
+                Width="350"
+                Padding="40"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            <DockPanel>
+                <TextBlock Text="Авторизация" Style="{StaticResource AuthTitleStyle}" DockPanel.Dock="Top"/>
 
+                <TextBox x:Name="UsernameBox"
+                         Style="{StaticResource RoundedTextBoxStyle}"
+                         Tag="Логин"
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus" DockPanel.Dock="Top"/>
+
+                <PasswordBox x:Name="PasswordBox"
+                             Style="{StaticResource RoundedPasswordBoxStyle}"
+                             Tag="Пароль"
+                             GotFocus="PasswordBox_GotFocus"
+                             LostFocus="PasswordBox_LostFocus"/>
+
+                <Button Content="Войти"
+                        Style="{StaticResource LoginButtonStyle}"
+                        Click="LoginButton_Click"/>
+
+            </DockPanel>
+        </Border>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+                    <Run Text="У вас нет аккаунта?" Foreground="#7C7C7C" FontWeight="SemiBold"/> <LineBreak/>
+                    <Hyperlink Click="RegisterHyperlink_Click" Style="{StaticResource LinkTextStyle}">Зарегистрироваться</Hyperlink>
+                </TextBlock>
     </Grid>
 </Page>

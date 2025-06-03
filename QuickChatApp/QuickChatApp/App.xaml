@@ -4,9 +4,13 @@
              xmlns:local="clr-namespace:QuickChatApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style TargetType="TextBlock"> <!--текст-->
+        <Style x:Key="BaseInputStyle" TargetType="Control">
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
-            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0 5 0 15"/>
         </Style>
         <Style TargetType="Grid"> <!--фон-->
             <Setter Property="Background" Value="#EEEEEE"/>
@@ -23,6 +27,7 @@
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="0 0 0 20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
         <!-- Стиль для кнопки входа -->
@@ -49,31 +54,44 @@
         </Style>
 
         <!-- Стиль для ссылки "Зарегистрироваться" -->
-        <Style x:Key="LinkTextStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Foreground" Value="#5C9EAD"/>
+        <Style x:Key="LinkTextStyle" TargetType="Hyperlink" >
+            <Setter Property="Foreground" Value="#E39774"/>
             <!-- Бирюзовый -->
             <Setter Property="TextDecorations" Value="Underline"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="0 10 0 0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <!-- Стиль для текстовых полей -->
-        <Style x:Key="InputFieldStyle" TargetType="TextBox">
-            <Setter Property="Width" Value="250"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="0 5 0 15"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="BorderBrush" Value="#5C9EAD"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <!-- Светло-серый -->
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="#5C9EAD"/>
+        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="8"
+                            Background="White"
+                            BorderBrush="#D8DEE9"
+                            BorderThickness="1">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Стиль для поля пароля -->
-        <Style x:Key="PasswordFieldStyle" TargetType="PasswordBox" BasedOn="{StaticResource InputFieldStyle}">
-            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+        <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource BaseInputStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border CornerRadius="8"
+                            Background="White"
+                            BorderBrush="#D8DEE9"
+                            BorderThickness="1">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>
