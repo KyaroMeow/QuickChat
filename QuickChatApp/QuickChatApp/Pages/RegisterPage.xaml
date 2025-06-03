@@ -6,10 +6,92 @@
       xmlns:local="clr-namespace:QuickChatApp.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="RegisterPage">
+      Title="Регистрация">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="QuickChat" Style="{StaticResource AppTitleStyle}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TextBlock Text="QuickChat" Style="{StaticResource AppTitleStyle}" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="18,18,0,18" Margin="0"/>
+            <Image Source="/Assets/Images/icon.png" Width="32" Height="35" Margin="1,18,1,18" VerticalAlignment="Top" HorizontalAlignment="Center" />
+        </StackPanel>
+        <Border CornerRadius="15"
+                Background="White"
+                Width="306"
+                Height="309"
+                Padding="28,16,28,20"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect Color="Black"
+                  BlurRadius="6"
+                  ShadowDepth="0"
+                  Opacity="0.3"/>
+            </Border.Effect>
+            <DockPanel>
+                <TextBlock Text="Регистрация" Style="{StaticResource AuthTitleStyle}" DockPanel.Dock="Top"/>
+                <Grid DockPanel.Dock="Top" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
+                    <!-- Кнопка-аватар -->
+                    <Button Width="55" Height="50"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ToolTip="Выбрать аватар"
+                            Cursor="Hand"
+                            Click="AvatarButton_Click"
+                            Grid.Column="0">
+                        <Ellipse Width="45" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="/Assets/Images/addicon.png" Stretch="UniformToFill"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Button>
+
+                    <!-- Поле имени -->
+                    <TextBox x:Name="NameBox"
+                         Style="{StaticResource RoundedTextBoxStyle}"
+                         Text="Имя"
+                         Tag="Имя"
+                         Grid.Column="1"
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus"/>
+                </Grid>
+                
+                <TextBox x:Name="LoginBox"
+                 Style="{StaticResource RoundedTextBoxStyle}"
+                 Tag="Логин"
+                 GotFocus="TextBox_GotFocus"
+                 LostFocus="TextBox_LostFocus" 
+                 DockPanel.Dock="Top"
+                 Text="Логин"/>
+
+                <Grid VerticalAlignment="Center"  DockPanel.Dock="Top" Background="Transparent">
+                    <PasswordBox x:Name="PasswordBox"
+                         Style="{StaticResource RoundedPasswordBoxStyle}"
+                         VerticalContentAlignment="Center"
+                         VerticalAlignment="Center"
+                         GotFocus="PasswordBox_GotFocus"
+                         LostFocus="PasswordBox_LostFocus"
+                         PasswordChanged="PasswordBox_PasswordChanged"/>
+                    <TextBlock x:Name="PasswordHint"
+                       Text="Пароль"
+                       Foreground="#5C9EAD"
+                       Margin="11,0,0,5"
+                       VerticalAlignment="Center"   
+                       IsHitTestVisible="False"
+                       FontSize="16"
+                       Visibility="Visible"/>
+                </Grid>
+
+                <Button Content="Зарегистрироваться"
+                Style="{StaticResource LoginButtonStyle}"
+                Click="LoginButton_Click"
+                DockPanel.Dock="Bottom" 
+                VerticalAlignment="Bottom"/>
+
+            </DockPanel>
+        </Border>
     </Grid>
 </Page>

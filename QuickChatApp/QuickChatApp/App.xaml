@@ -4,19 +4,21 @@
              xmlns:local="clr-namespace:QuickChatApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+        </Style>
         <Style x:Key="BaseInputStyle" TargetType="Control">
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Width" Value="250"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="0 5 0 15"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#5B5B5B"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="0 5 0 7"/>
         </Style>
         <Style TargetType="Grid"> <!--фон-->
             <Setter Property="Background" Value="#EEEEEE"/>
         </Style>
         <Style x:Key="AppTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}"> <!--Заголовок-->
-            <Setter Property="FontSize" Value="45"/>
+            <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="#E39774"/>
             <Setter Property="Margin" Value="0 0 0 30"/>
@@ -24,20 +26,19 @@
         <!-- Стиль для заголовка "Авторизация" -->
         <Style x:Key="AuthTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Foreground" Value="#5C9EAD"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="0 0 0 20"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
         <!-- Стиль для кнопки входа -->
         <Style x:Key="LoginButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#5C9EAD"/>
-            <!-- Бирюзовый -->
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Width" Value="120"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+
             <Setter Property="Height" Value="40"/>
             <Setter Property="Margin" Value="0 20 0 0"/>
             <Setter Property="Template">
@@ -56,7 +57,6 @@
         <!-- Стиль для ссылки "Зарегистрироваться" -->
         <Style x:Key="LinkTextStyle" TargetType="Hyperlink" >
             <Setter Property="Foreground" Value="#E39774"/>
-            <!-- Бирюзовый -->
             <Setter Property="TextDecorations" Value="Underline"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -64,30 +64,45 @@
 
         <!-- Стиль для текстовых полей -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}">
+            <Setter Property="Foreground" Value="#5C9EAD"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border CornerRadius="8"
-                            Background="White"
-                            BorderBrush="#D8DEE9"
-                            BorderThickness="1">
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="5"/>
+                        <Border CornerRadius="5"
+                            Background="#EEEEEE"
+                            BorderBrush="#5C9EAD"
+                            BorderThickness="1.5">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                              Margin="5"
+                              VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
+        
+        
         <!-- Стиль для поля пароля -->
         <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource BaseInputStyle}">
+            <Setter Property="Foreground" Value="#5C9EAD"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="PasswordChar" Value="*"/>
+            <Setter Property="Foreground" Value="#5C9EAD"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
-                        <Border CornerRadius="8"
-                            Background="White"
-                            BorderBrush="#D8DEE9"
-                            BorderThickness="1">
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="5"/>
+                        <Border CornerRadius="5"
+                            Background="#EEEEEE"
+                            BorderBrush="#5C9EAD"
+                            BorderThickness="1.5">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                              Margin="5"
+                              VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>

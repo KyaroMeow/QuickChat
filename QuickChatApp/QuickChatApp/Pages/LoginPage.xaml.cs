@@ -23,6 +23,63 @@ namespace QuickChatApp.Pages
         public LoginPage()
         {
             InitializeComponent();
-        }
-    }
+			SetPlaceholders();
+
+		}
+		private void SetPlaceholders()
+		{
+			// Установка placeholder для логина
+			UsernameBox.Text = "Логин";
+			UsernameBox.Foreground = Brushes.Gray;
+
+			// Установка placeholder для пароля (через событие Loaded)
+			PasswordBox.Loaded += (s, e) => SetPasswordPlaceholder();
+		}
+		private void SetPasswordPlaceholder()
+		{
+			if (string.IsNullOrEmpty(PasswordBox.Password))
+			{
+				PasswordBox.Background = new VisualBrush(new TextBlock()
+				{
+					Text = "Пароль",
+					Foreground = Brushes.Gray,
+					FontSize = 14,
+					Margin = new Thickness(5, 0, 0, 0),
+					VerticalAlignment = VerticalAlignment.Center
+				})
+				{ Stretch = Stretch.None, AlignmentX = AlignmentX.Left };
+			}
+		}
+
+		//Методы из xaml-элементов!!!!!!!
+		private void LoginButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+	}
 }

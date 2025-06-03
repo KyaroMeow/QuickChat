@@ -24,5 +24,30 @@ namespace QuickChatApp.Pages
         {
             InitializeComponent();
         }
-    }
+
+		private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+
+        }
+
+		private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void LoginButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+	}
 }
