@@ -1,38 +1,93 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using WebApplication2.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 using WebApplication2.DTO;
+using WebApplication2.Models;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+namespace WebApplication2.Controllers
 {
-    private readonly QuickChatBaseContext _context;
-    private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly ITokenService _tokenService;
-
-    public AuthController(QuickChatBaseContext context, IPasswordHasher<User> passwordHasher, ITokenService tokenService)
+    [Route("api/auth")]
+    [ApiController]
+    public class AuthController : ControllerBase
     {
-        _context = context;
-        _passwordHasher = passwordHasher;
-        _tokenService = tokenService;
-    }
+        private readonly QuickChatBaseContext _context;
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
-    {
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Login == loginDto.Login);
-        if (user == null)
-            return Unauthorized("Invalid login or password.");
+        public AuthController(QuickChatBaseContext context)
+        {
+            _context = context;
+        }
 
-        var result = _passwordHasher.VerifyHashedPassword(null, user.PasswordHash, loginDto.Password);
-        if (result == PasswordVerificationResult.Failed)
-            return Unauthorized("Invalid login or password.");
+        // POST: api/auth/register
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDTO>> Register(UserCreateDTO userDto)
+        {
+            if (await _context.Users.AnyAsync(u => u.Login == userDto.Login))
+            {
+                return Conflict("User with this login already exists");
+            }
 
-        var token = _tokenService.GenerateToken(user);
-        return Ok(new { Token = token });
+            var user = new User
+            {
+                Login = userDto.Login,
+                Username = userDto.Username,
+                Passwordhash = HashPassword(userDto.Password),
+                Avatarurl = userDto.AvatarUrl,
+                Isonline = true
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Register), new UserDTO
+            {
+                Id = user.Id,
+                Login = user.Login,
+                Username = user.Username,
+                AvatarUrl = user.Avatarurl,
+                IsOnline = user.Isonline ?? false
+            });
+        }
+
+        // POST: api/auth/login
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDTO>> Login(UserLoginDTO loginDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Login == loginDto.Login);
+            if (user == null)
+            {
+                return Unauthorized("Invalid login or password");
+            }
+
+            if (!VerifyPassword(loginDto.Password, user.Passwordhash))
+            {
+                return Unauthorized("Invalid login or password");
+            }
+
+            user.Isonline = true;
+            await _context.SaveChangesAsync();
+
+            return Ok(new UserDTO
+            {
+                Id = user.Id,
+                Login = user.Login,
+                Username = user.Username,
+                AvatarUrl = user.Avatarurl,
+                LastOnline = user.Lastonline,
+                IsOnline = user.Isonline ?? false
+            });
+        }
+
+        private static string HashPassword(string password)
+        {
+            using var sha256 = SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+
+        private static bool VerifyPassword(string password, string storedHash)
+        {
+            return HashPassword(password) == storedHash;
+        }
     }
 }
-
-
