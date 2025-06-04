@@ -4,172 +4,152 @@
              xmlns:local="clr-namespace:QuickChatApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+        <!-- Цветовая палитра -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#5C9EAD"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#E39774"/>
+        <SolidColorBrush x:Key="BackgroundColor" Color="#EEEEEE"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#F9F9F9"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#5B5B5B"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#8F8F8F"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#D9D9D9"/>
+        <SolidColorBrush x:Key="WhiteColor" Color="White"/>
+
+        <!-- Базовые стили -->
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
         </Style>
+
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+        </Style>
+
+        <!-- Базовый стиль для контролов ввода -->
         <Style x:Key="BaseInputStyle" TargetType="Control">
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="#5B5B5B"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
             <Setter Property="Height" Value="38"/>
-            <Setter Property="Margin" Value="0 5 0 7"/>
+            <Setter Property="Margin" Value="0,5,0,7"/>
         </Style>
-        <Style TargetType="Grid"> <!--фон-->
-            <Setter Property="Background" Value="#EEEEEE"/>
-        </Style>
-        <Style x:Key="AppTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}"> <!--Заголовок-->
+
+        <!-- ЗАГОЛОВКИ И ТЕКСТ -->
+        <Style x:Key="AppTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="#E39774"/>
-            <Setter Property="Margin" Value="0 0 0 30"/>
+            <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
+            <Setter Property="Margin" Value="0,0,0,30"/>
         </Style>
-        <!-- Стиль для заголовка "Авторизация" -->
+
         <Style x:Key="AuthTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Foreground" Value="#5C9EAD"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        <!-- Стиль для кнопки входа -->
-        <Style x:Key="LoginButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#5C9EAD"/>
-            <Setter Property="Foreground" Value="White"/>
+        <Style x:Key="ChatTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="0 20 0 0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                            CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                        VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
-        <!-- Стиль для ссылки "Зарегистрироваться" -->
-        <Style x:Key="LinkTextStyle" TargetType="Hyperlink" >
-            <Setter Property="Foreground" Value="#E39774"/>
-            <Setter Property="TextDecorations" Value="Underline"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+        <Style x:Key="ContactNameStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
         </Style>
 
-        <!-- Стиль для текстовых полей -->
+        <Style x:Key="LastMessageStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryColor}"/>
+        </Style>
+
+        <Style x:Key="MessageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+        </Style>
+
+        <Style x:Key="MessageTimeStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryColor}"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+
+        <!-- ПОЛЯ ВВОДА -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}">
-            <Setter Property="Foreground" Value="#5C9EAD"/>
-            <Setter Property="Padding" Value="5,0"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border CornerRadius="5"
-                            Background="#EEEEEE"
-                            BorderBrush="#5C9EAD"
-                            BorderThickness="1.5">
+                                Background="{StaticResource WhiteColor}"
+                                BorderBrush="{StaticResource PrimaryColor}"
+                                BorderThickness="1.5">
                             <ScrollViewer x:Name="PART_ContentHost"
-                              Margin="5"
-                              VerticalAlignment="Center"/>
+                                         Margin="10,0"
+                                         VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        
-        <!-- Стиль для поля пароля -->
+
         <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource BaseInputStyle}">
-            <Setter Property="Foreground" Value="#5C9EAD"/>
-            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="Padding" Value="10,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="PasswordChar" Value="*"/>
-            <Setter Property="Foreground" Value="#5C9EAD"/>
-            <Setter Property="FontSize" Value="16"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
                         <Border CornerRadius="5"
-                            Background="#EEEEEE"
-                            BorderBrush="#5C9EAD"
-                            BorderThickness="1.5">
+                                Background="{StaticResource WhiteColor}"
+                                BorderBrush="{StaticResource PrimaryColor}"
+                                BorderThickness="1.5">
                             <ScrollViewer x:Name="PART_ContentHost"
-                              Margin="5"
-                              VerticalAlignment="Center"/>
+                                         Margin="10,0"
+                                         VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        
-        
-        
-        <!-- Стиль для списка чатов -->
-        <Style x:Key="ChatListStyle" TargetType="ListBox">
+        <Style x:Key="SearchBoxStyle" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryColor}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Margin" Value="0,5,0,0"/>
-        </Style>
-
-        <SolidColorBrush x:Key="ChatItemBorderColor" Color="#FFD9D9D9"/>
-        <SolidColorBrush x:Key="ChatItemSelectedBorderColor" Color="#FFFF9800"/>
-        <Thickness x:Key="ChatItemBorderThickness">1</Thickness>
-        <CornerRadius x:Key="ChatItemCornerRadius">5</CornerRadius>
-        
-        <!-- Стиль для элементов списка чатов -->
-        <Style x:Key="ChatItemStyle" TargetType="ListBoxItem">
-            
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border
-                            x:Name="Border"
-                            BorderThickness="{StaticResource ChatItemBorderThickness}"
-                            CornerRadius="{StaticResource ChatItemCornerRadius}"
-                            BorderBrush="{StaticResource ChatItemBorderColor}"
-                            Background="{TemplateBinding Background}">
-                            <ContentPresenter
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Margin="0"/>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                         Margin="{TemplateBinding Padding}"
+                                         VerticalAlignment="Center"/>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ChatItemSelectedBorderColor}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>                       
-
-
-        <!-- Стиль для сообщений -->
-        <Style x:Key="MessageStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="Margin" Value="10,5"/>
-            <Setter Property="MaxWidth" Value="400"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
-        <!-- Стиль для поля ввода сообщения -->
         <Style x:Key="MessageInputStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#D8DEE9"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="15,10"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -186,12 +166,40 @@
             </Setter>
         </Style>
 
-        <!-- Стиль для кнопки отправки -->
+        <!-- КНОПКИ -->
+        <Style x:Key="LoginButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4A8B9A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="SendButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#5C9EAD"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
             <Setter Property="Width" Value="50"/>
             <Setter Property="Height" Value="50"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -202,11 +210,218 @@
                                       VerticalAlignment="Center"
                                       FontSize="18"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4A8B9A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AddChatButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Width" Value="23"/>
+            <Setter Property="Height" Value="23"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="12" Background="{TemplateBinding Background}">
+                            <TextBlock Text="+" 
+                                      Foreground="{StaticResource WhiteColor}" 
+                                      FontSize="20" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4A8B9A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ССЫЛКИ -->
+        <Style x:Key="LinkTextStyle" TargetType="Hyperlink">
+            <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
+            <Setter Property="TextDecorations" Value="Underline"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <!-- СПИСКИ ЧАТОВ -->
+        <Style x:Key="ChatListStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer Focusable="False">
+                                <StackPanel Margin="5,0" IsItemsHost="True"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ChatItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Padding" Value="7"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Border"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                BorderBrush="{StaticResource BorderColor}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#F0F0F0"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
+                                <Setter TargetName="Border" Property="Background" Value="#FFF8F5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- АВАТАРЫ -->
+        <Style x:Key="AvatarStyle" TargetType="Ellipse">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Fill" Value="{StaticResource PrimaryColor}"/>
+        </Style>
+
+        <Style x:Key="SmallAvatarStyle" TargetType="Ellipse">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Fill" Value="{StaticResource TextSecondaryColor}"/>
+        </Style>
+
+        <!-- СООБЩЕНИЯ -->
+        <Style x:Key="IncomingMessageStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="CornerRadius" Value="15,15,15,5"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="10,5,50,5"/>
+            <Setter Property="MaxWidth" Value="400"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="1" Opacity="0.1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OutgoingMessageStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="CornerRadius" Value="15,15,5,15"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="50,5,10,5"/>
+            <Setter Property="MaxWidth" Value="400"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="1" Opacity="0.1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OutgoingMessageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource MessageTextStyle}">
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
+        </Style>
+
+        <Style x:Key="OutgoingMessageTimeStyle" TargetType="TextBlock" BasedOn="{StaticResource MessageTimeStyle}">
+            <Setter Property="Foreground" Value="#E0F0F0"/>
+        </Style>
+
+        <!-- ПАНЕЛИ И КОНТЕЙНЕРЫ -->
+        <Style x:Key="SidebarStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource SurfaceColor}"/>
+            <Setter Property="CornerRadius" Value="10,0,0,10"/>
+            <Setter Property="Margin" Value="10,0,0,8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="ChatAreaStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="CornerRadius" Value="10,10,10,0"/>
+            <Setter Property="Margin" Value="0,8,8,8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="SearchContainerStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="AuthContainerStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="Width" Value="320"/>
+            <Setter Property="Padding" Value="30,20"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="2" Opacity="0.15"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- СКРОЛЛБАРЫ -->
+        <Style x:Key="MessagesScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
 
     </Application.Resources>
 </Application>

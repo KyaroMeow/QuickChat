@@ -29,10 +29,10 @@
             </Border>
             <!--меню со скруглением-->
             <Border Background="#F9F9F9"
-                    CornerRadius="10,0,0,10" 
+                    CornerRadius="8,0,0,8" 
                     Margin="10,0,0,8"
                     BorderBrush="#5C9EAD"
-                    BorderThickness="1"
+                    BorderThickness="1,1,0,1"
                     DockPanel.Dock="Top">
                 <DockPanel DockPanel.Dock="Top"  Margin="10,10,4,10">
                     <DockPanel DockPanel.Dock="Top">
@@ -96,23 +96,86 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="52"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.RowSpan="3" Background="#FFFFFF"
-                        CornerRadius="10,10,10,0" 
-                        Margin="0,8,8,8"
-                        BorderBrush="#5C9EAD"
-                        BorderThickness="1">
-                <DockPanel VerticalAlignment="Top"> <!--Заголовок чата-->
-                    <Ellipse DockPanel.Dock="Left" Width="40" Height="40" Fill="#5C9EAD" Margin="6,2"/>
-                    <TextBlock x:Name="ChatTitle" 
-                              Text="Антон" 
-                              FontWeight="Bold" 
-                              FontSize="18" 
-                              VerticalAlignment="Center"/>
-                </DockPanel>
-                
+            <Border Grid.RowSpan="3" Style="{StaticResource ChatAreaStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок чата -->
+                    <DockPanel Grid.Row="0" Margin="20,15">
+                        <Ellipse Style="{StaticResource AvatarStyle}" DockPanel.Dock="Left"/>
+                        <StackPanel DockPanel.Dock="Left" Margin="15,0" VerticalAlignment="Center">
+                            <TextBlock Text="Анна Петрова" Style="{StaticResource ChatTitleStyle}"/>
+                            <TextBlock Text="в сети" Style="{StaticResource LastMessageStyle}"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Область сообщений -->
+                    <ScrollViewer Grid.Row="1" 
+                                  Style="{StaticResource MessagesScrollViewerStyle}"
+                                  x:Name="MessagesScrollViewer">
+                        <StackPanel x:Name="MessagesPanel" Margin="10">
+
+                            <!-- Примеры сообщений -->
+                            <!-- Входящее сообщение -->
+                            <Border Style="{StaticResource IncomingMessageStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Привет! Как дела? Давно не виделись!" 
+                                               Style="{StaticResource MessageTextStyle}"/>
+                                    <TextBlock Text="14:32" Style="{StaticResource MessageTimeStyle}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Исходящее сообщение -->
+                            <Border Style="{StaticResource OutgoingMessageStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Привет! Все отлично, спасибо! А у тебя как?" 
+                                               Style="{StaticResource OutgoingMessageTextStyle}"/>
+                                    <TextBlock Text="14:35" Style="{StaticResource OutgoingMessageTimeStyle}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Входящее сообщение -->
+                            <Border Style="{StaticResource IncomingMessageStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Тоже все хорошо! Может встретимся на выходных?" 
+                                               Style="{StaticResource MessageTextStyle}"/>
+                                    <TextBlock Text="14:40" Style="{StaticResource MessageTimeStyle}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Исходящее сообщение -->
+                            <Border Style="{StaticResource OutgoingMessageStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Отличная идея! Давай в субботу встретимся в парке в 2 часа?" 
+                                               Style="{StaticResource OutgoingMessageTextStyle}"/>
+                                    <TextBlock Text="14:42" Style="{StaticResource OutgoingMessageTimeStyle}"/>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Поле ввода сообщения -->
+                    <Border Grid.Row="2" Background="Transparent" Padding="20,15">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" 
+                                    Style="{StaticResource SendButtonStyle}" 
+                                    Margin="15,0,0,0"/>
+                            <TextBox x:Name="MessageInput" 
+                                     Style="{StaticResource MessageInputStyle}"
+                                     Text="Введите сообщение..."/>
+                        </DockPanel>
+                    </Border>
+
+                </Grid>
+
             </Border>
 
             <!-- Область сообщений --><!--
