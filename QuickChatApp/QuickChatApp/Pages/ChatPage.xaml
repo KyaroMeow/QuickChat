@@ -9,6 +9,138 @@
       Title="ChatPage">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Левая панель со списком чатов -->
+        <DockPanel>
+            <Border DockPanel.Dock="Top" Background="#EEEEEE" Padding="10,8">
+                <DockPanel>
+                    <Button DockPanel.Dock="Left" Background="Transparent" BorderThickness="0" Width="30" Height="30">
+                        <TextBlock Text="☰" FontSize="24" HorizontalAlignment="Center" Foreground="#8F8F8F"/>
+                    </Button>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <TextBlock Text="QuickChat" Style="{StaticResource AppTitleStyle}" Padding="0" Margin="0"/>
+                        <Image Source="/Assets/Images/icon.png" Width="32" Height="35" Margin="0" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <!--меню со скруглением-->
+            <Border Background="#F9F9F9"
+                    CornerRadius="10,0,0,10" 
+                    Margin="10,0,0,8"
+                    BorderBrush="#5C9EAD"
+                    BorderThickness="1"
+                    DockPanel.Dock="Top">
+                <DockPanel DockPanel.Dock="Top"  Margin="10,10,4,10">
+                    <DockPanel DockPanel.Dock="Top">
+                        <Button DockPanel.Dock="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Width="23" Height="23" Margin="5,0,0,0">
+                            <!--Добавление-->
+                            <Border CornerRadius="10"  Background="#5C9EAD" Width="20">
+                                <TextBlock Text="+" Foreground="White" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Button>
+                        <Border Background="#EEEEEE"
+                                CornerRadius="4,4,4,4" 
+                                Margin="0"
+                                DockPanel.Dock="Top">
+                            <DockPanel>
+                                <Image Source="/Assets/Images/search.png" Width="15" Height="15" Margin="5" />
+                                <TextBox Text="Поиск" 
+                                Foreground="#8F8F8F"
+                                GotFocus="SearchBox_GotFocus"
+                                LostFocus="SearchBox_LostFocus"
+                                 FontWeight="Normal">
+                                    <TextBox.Template>
+                                        <ControlTemplate TargetType="TextBox">
+                                            <Border>
+                                                <ScrollViewer x:Name="PART_ContentHost" 
+                                                     Margin="{TemplateBinding Padding}"
+                                                     VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </TextBox.Template>
+                                </TextBox>
+                            </DockPanel>
+                        </Border>
+                    </DockPanel>
+                    <ListBox x:Name="ChatsList" 
+                                     Style="{StaticResource ChatListStyle}"
+                                     ItemContainerStyle="{StaticResource ChatItemStyle}"
+                                     DockPanel.Dock="Top">
+                        <ListBoxItem>
+                            <!--<DataTemplate> Подправлю потом-->
+                            <StackPanel Orientation="Horizontal" Margin="7">
+                                <Ellipse Width="28" Height="28" Fill="#8F8F8F"/>
+                                <StackPanel Margin="10,0">
+                                    <TextBlock Text="Имя контакта" Foreground="#5B5B5B" />
+                                    <!--TextBlock Text="{Binding Name}" Foreground="#5B5B5B"-->
+                                </StackPanel>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+        </DockPanel>
+
         
+        
+        
+        
+        
+        
+        <!-- Правая панель с чатом -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.RowSpan="3" Background="#FFFFFF"
+                        CornerRadius="10,10,10,0" 
+                        Margin="0,8,8,8"
+                        BorderBrush="#5C9EAD"
+                        BorderThickness="1">
+                <DockPanel VerticalAlignment="Top"> <!--Заголовок чата-->
+                    <Ellipse DockPanel.Dock="Left" Width="40" Height="40" Fill="#5C9EAD" Margin="6,2"/>
+                    <TextBlock x:Name="ChatTitle" 
+                              Text="Антон" 
+                              FontWeight="Bold" 
+                              FontSize="18" 
+                              VerticalAlignment="Center"/>
+                </DockPanel>
+                
+            </Border>
+
+            <!-- Область сообщений --><!--
+            <Border Grid.Row="1" Background="#F8F8F8">
+                <DockPanel>
+                    --><!-- Список сообщений --><!--
+                    <ScrollViewer x:Name="MessagesScrollViewer" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="MessagesPanel" Margin="20"/>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>-->
+
+            <!-- Поле ввода сообщения -->
+            <!--<Border Grid.Row="2" Background="White" Padding="20,15">
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" 
+                           Style="{StaticResource SendButtonStyle}" 
+                           Margin="10,0,0,0"
+                           Click="SendButton_Click"/>
+                    <TextBox x:Name="MessageInput" 
+                            Style="{StaticResource MessageInputStyle}"
+                            Text="Сообщение..."
+                            Foreground="Gray"
+                            KeyDown="MessageInput_KeyDown"
+                            GotFocus="MessageInput_GotFocus"
+                            LostFocus="MessageInput_LostFocus"/>
+                </DockPanel>
+            </Border>-->
+        </Grid>
     </Grid>
 </Page>
