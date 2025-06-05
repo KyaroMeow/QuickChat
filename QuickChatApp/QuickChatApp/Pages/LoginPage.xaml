@@ -13,13 +13,7 @@
             <TextBlock Text="QuickChat" Style="{StaticResource AppTitleStyle}" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="18,18,0,18" Margin="0"/>
             <Image Source="/Assets/Images/icon.png" Width="32" Height="35" Margin="1,18,1,18" VerticalAlignment="Top" HorizontalAlignment="Center" />
         </StackPanel>
-        <Border CornerRadius="15"
-                Background="White"
-                Width="306"
-                Height="309"
-                Padding="28,16,28,20"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center">
+        <Border Style="{StaticResource AuthContainerStyle}">
             <Border.Effect>
                 <DropShadowEffect Color="Black"
                           BlurRadius="6"
@@ -37,34 +31,29 @@
                          DockPanel.Dock="Top"
                          Text="Логин"/>
 
-                <Grid VerticalAlignment="Center"  DockPanel.Dock="Top" Background="Transparent">
+                <Grid VerticalAlignment="Center"  DockPanel.Dock="Top" Background="Transparent" Margin="0,0,0,50">
                     <PasswordBox x:Name="PasswordBox"
-                             Style="{StaticResource RoundedPasswordBoxStyle}"
-                             VerticalContentAlignment="Center"
-                             VerticalAlignment="Center"
-                             GotFocus="PasswordBox_GotFocus"
-                             LostFocus="PasswordBox_LostFocus"
-                             PasswordChanged="PasswordBox_PasswordChanged"/>
+                             Style="{StaticResource RoundedPasswordBoxStyle}"/>
                     <TextBlock x:Name="PasswordHint"
                            Text="Пароль"
-                           Foreground="#5C9EAD"
-                           Margin="11,0,0,5"
+                           Foreground="{StaticResource PrimaryColor}"
+                           Margin="10,0,0,1"
                            VerticalAlignment="Center"   
                            IsHitTestVisible="False"
                            FontSize="16"
                            Visibility="Visible"/>
                 </Grid>
 
-                <Button Content="Войти"
+                <Button x:Name="ButtonBorder"
                         Style="{StaticResource LoginButtonStyle}"
-                        Click="LoginButton_Click"
-                        DockPanel.Dock="Bottom" 
-                        VerticalAlignment="Bottom"/>
+                        Click="LoginButton_Click">
+                    <TextBlock Text="Войти" Foreground="{StaticResource WhiteColor}"/>
+                </Button>
 
             </DockPanel>
         </Border>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="15" TextAlignment="Center" FontSize="11">
-             <Run Text="У вас нет аккаунта?" Foreground="#7C7C7C" FontWeight="Medium"/> 
+             <Run Text="У вас нет аккаунта?" Foreground="{StaticResource TextSecondaryColor}"  FontWeight="Medium"/> 
                 <LineBreak/>
              <Hyperlink Click="RegisterHyperlink_Click" Style="{StaticResource LinkTextStyle}">Зарегистрироваться</Hyperlink>
          </TextBlock>

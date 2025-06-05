@@ -46,13 +46,13 @@
             <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
         <Style x:Key="ChatTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -69,7 +69,7 @@
         </Style>
 
         <Style x:Key="MessageTextStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
         </Style>
@@ -83,7 +83,7 @@
 
         <!-- ПОЛЯ ВВОДА -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}">
-            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -143,10 +143,10 @@
 
         <Style x:Key="MessageInputStyle" TargetType="TextBox">
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
-            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,2"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -156,7 +156,7 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="25">
+                                CornerRadius="6">
                             <ScrollViewer x:Name="PART_ContentHost" 
                                          Margin="{TemplateBinding Padding}"
                                          VerticalAlignment="Center"/>
@@ -167,52 +167,51 @@
         </Style>
 
         <!-- КНОПКИ -->
-        <Style x:Key="LoginButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
-            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="0,20,0,0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                            VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#4A8B9A"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="LoginButtonStyle" TargetType="Button">  
+           <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>  
+           <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>  
+           <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Font/Montserrat-VariableFont_wght.ttf#Montserrat"/>  
+           <Setter Property="FontSize" Value="18"/>  
+           <Setter Property="FontWeight" Value="SemiBold"/>  
+           <Setter Property="Height" Value="40"/>  
+           <Setter Property="Margin" Value="0,20,0,0"/>  
+           <Setter Property="Cursor" Value="Hand"/>  
+           <Setter Property="Template">  
+               <Setter.Value>  
+                   <ControlTemplate TargetType="Button">  
+                       <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"   
+                               CornerRadius="5">  
+                           <ContentPresenter HorizontalAlignment="Center"   
+                                             VerticalAlignment="Center"  
+                                             RecognizesAccessKey="True"/>  
+                       </Border>  
+                       <ControlTemplate.Triggers>  
+                           <Trigger Property="IsMouseOver" Value="True">  
+                               <Setter TargetName="ButtonBorder" Property="Background" Value="#4A8B9A"/>  
+                           </Trigger>  
+                       </ControlTemplate.Triggers>  
+                   </ControlTemplate>  
+               </Setter.Value>  
+           </Setter>  
         </Style>
 
         <Style x:Key="SendButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
-            <Setter Property="Width" Value="50"/>
-            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="40"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="25">
-                            <TextBlock Text="💬" 
+                            <Image Source="/Assets/Images/imgSend.png"
                                       HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center"
-                                      FontSize="18"/>
+                                      VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#4A8B9A"/>
+                                <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -279,7 +278,7 @@
         <Style x:Key="ChatListStyle" TargetType="ListBox">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
+            <Setter Property="Margin" Value="0,6,0,0"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="Template">
@@ -289,7 +288,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
                             <ScrollViewer Focusable="False">
-                                <StackPanel Margin="5,0" IsItemsHost="True"/>
+                                <StackPanel Margin="0,0,3,0" IsItemsHost="True"/>
                             </ScrollViewer>
                         </Border>
                     </ControlTemplate>
@@ -300,14 +299,14 @@
         <Style x:Key="ChatItemStyle" TargetType="ListBoxItem">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="Padding" Value="7"/>
+            <Setter Property="Padding" Value="6,7"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border x:Name="Border"
                                 BorderThickness="1"
-                                CornerRadius="5"
+                                CornerRadius="4"
                                 BorderBrush="{StaticResource BorderColor}"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Left"
@@ -330,8 +329,8 @@
 
         <!-- АВАТАРЫ -->
         <Style x:Key="AvatarStyle" TargetType="Ellipse">
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="33"/>
+            <Setter Property="Height" Value="33"/>
             <Setter Property="Fill" Value="{StaticResource PrimaryColor}"/>
         </Style>
 
@@ -343,11 +342,11 @@
 
         <!-- СООБЩЕНИЯ -->
         <Style x:Key="IncomingMessageStyle" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
-            <Setter Property="CornerRadius" Value="15,15,15,5"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="Margin" Value="10,5,50,5"/>
-            <Setter Property="MaxWidth" Value="400"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+            <Setter Property="CornerRadius" Value="10,10,10,3"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="8,5"/>
+            <Setter Property="MaxWidth" Value="350"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Effect">
                 <Setter.Value>
@@ -358,10 +357,10 @@
 
         <Style x:Key="OutgoingMessageStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="CornerRadius" Value="15,15,5,15"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="Margin" Value="50,5,10,5"/>
-            <Setter Property="MaxWidth" Value="400"/>
+            <Setter Property="CornerRadius" Value="10,10,3,10"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="8,5"/>
+            <Setter Property="MaxWidth" Value="350"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="Effect">
                 <Setter.Value>
@@ -380,32 +379,32 @@
 
         <!-- ПАНЕЛИ И КОНТЕЙНЕРЫ -->
         <Style x:Key="SidebarStyle" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource SurfaceColor}"/>
-            <Setter Property="CornerRadius" Value="10,0,0,10"/>
+            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="CornerRadius" Value="8,0,0,8"/>
             <Setter Property="Margin" Value="10,0,0,8"/>
             <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="1,1,0,1"/>
         </Style>
 
         <Style x:Key="ChatAreaStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
-            <Setter Property="CornerRadius" Value="10,10,10,0"/>
+            <Setter Property="CornerRadius" Value="8,8,8,0"/>
             <Setter Property="Margin" Value="0,8,8,8"/>
             <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="1,1,1,1"/>
         </Style>
 
         <Style x:Key="SearchContainerStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0.7"/>
         </Style>
 
         <Style x:Key="AuthContainerStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="15"/>
             <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
-            <Setter Property="Width" Value="320"/>
+            <Setter Property="Width" Value="280"/>
             <Setter Property="Padding" Value="30,20"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>

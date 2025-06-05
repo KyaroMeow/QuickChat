@@ -85,11 +85,13 @@
                        Visibility="Visible"/>
                 </Grid>
 
-                <Button Content="Зарегистрироваться"
+                <Button
                 Style="{StaticResource LoginButtonStyle}"
                 Click="LoginButton_Click"
                 DockPanel.Dock="Bottom" 
-                VerticalAlignment="Bottom"/>
+                VerticalAlignment="Bottom">
+                    <TextBlock Text="Зарегистрироваться" Foreground="{StaticResource WhiteColor}"/>
+                </Button>
 
             </DockPanel>
         </Border>
