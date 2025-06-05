@@ -69,41 +69,22 @@
                         </Border>
                     </DockPanel>
 
-                    <!-- Chat List -->
+                    <!-- ChatPage.xaml (измененная часть) -->
                     <ListBox x:Name="ChatsList" 
-                             Style="{StaticResource ChatListStyle}"
-                             ItemContainerStyle="{StaticResource ChatItemStyle}">
-
-                        <!-- Chat Items -->
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Style="{StaticResource SmallAvatarStyle}"/>
-                                <StackPanel Margin="10,0" VerticalAlignment="Center">
-                                    <TextBlock Text="Анна Петрова" Style="{StaticResource ContactNameStyle}"/>
-                                    <TextBlock Text="Привет! Как дела?" Style="{StaticResource LastMessageStyle}"/>
+         Style="{StaticResource ChatListStyle}"
+         ItemContainerStyle="{StaticResource ChatItemStyle}"
+         ItemsSource="{Binding Contacts}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="28" Height="28" Fill="{Binding AvatarColor}"/>
+                                    <StackPanel Margin="10,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource ContactNameStyle}"/>
+                                        <TextBlock Text="{Binding LastMessage}" Style="{StaticResource LastMessageStyle}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </ListBoxItem>
-
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Style="{StaticResource SmallAvatarStyle}"/>
-                                <StackPanel Margin="10,0" VerticalAlignment="Center">
-                                    <TextBlock Text="Михаил Козлов" Style="{StaticResource ContactNameStyle}"/>
-                                    <TextBlock Text="Увидимся завтра" Style="{StaticResource LastMessageStyle}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </ListBoxItem>
-
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Style="{StaticResource SmallAvatarStyle}"/>
-                                <StackPanel Margin="10,0" VerticalAlignment="Center">
-                                    <TextBlock Text="Рабочая группа" Style="{StaticResource ContactNameStyle}"/>
-                                    <TextBlock Text="Документы готовы" Style="{StaticResource LastMessageStyle}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </ListBoxItem>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </DockPanel>
             </Border>

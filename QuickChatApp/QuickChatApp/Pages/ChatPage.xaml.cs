@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +21,46 @@ namespace QuickChatApp.Pages
     /// </summary>
     public partial class ChatPage : Page
     {
+        public ObservableCollection<Contact> Contacts { get; set; }
         public ChatPage()
         {
+
             InitializeComponent();
+            // Инициализация коллекции контактов
+            Contacts = new ObservableCollection<Contact>
+            {
+                new Contact { Name = "Анна Петрова", LastMessage = "Привет! Чат работает?", AvatarColor = Brushes.LightBlue },
+                new Contact { Name = "Михаил Козлов", LastMessage = "Увидимся в quickchat`е!", AvatarColor = Brushes.LightGreen },
+               new Contact { Name = "Рабочая группа", LastMessage = "Документация уже в процессе!", AvatarColor = Brushes.LightSalmon },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen }
+
+            };
+
+            DataContext = this;
+
             MessageInput.GotFocus += MessageInput_GotFocus;
             MessageInput.LostFocus += MessageInput_LostFocus;
-            SidebarPopup.IsOpen = false; // Скрываем меню при загрузке
+            SidebarPopup.IsOpen = false;
         }
 
+        public class Contact
+        {
+            public string Name { get; set; }
+            public string LastMessage { get; set; }
+            public Brush AvatarColor { get; set; }
+            public bool IsOnline { get; set; }
+        }
         private void MessageInput_GotFocus(object sender, RoutedEventArgs e)
         {
             if (MessageInput.Text == "Введите сообщение...")
