@@ -63,9 +63,9 @@ namespace QuickChatApp.Pages
                 MessageBox.Show("Введите логин и пароль");
                 return;
             }
-   
+
             // Здесь можно добавить проверку данных с сервера или локальной базы данных
-            //NavigationService.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative));
         }
         //Методы из xaml-элементов!!!!!!!
 
