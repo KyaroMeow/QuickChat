@@ -377,6 +377,138 @@
             <Setter Property="Foreground" Value="#E0F0F0"/>
         </Style>
 
+        <!-- САЙДБАР -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" 
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="Center"
+                                      Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#F0F0F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LogoutButtonStyle" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+            <Setter Property="Background" Value="#FFF0F0"/>
+            <Setter Property="Foreground" Value="#E74C3C"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <!-- avatar style -->
+        <Style x:Key="AvatarChangeStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock TextDecorations="Underline" 
+                           Foreground="{StaticResource PrimaryColor}">
+                    <ContentPresenter/>
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- logout popout -->
+        <Style x:Key="ConfirmationButtonStyle" TargetType="Button" BasedOn="{StaticResource LoginButtonStyle}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="10,0"/>
+        </Style>
+
+        <Style x:Key="CancelButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- СПИСОК КОНТАКТОВ -->
+        <Style x:Key="ContactsPopupStyle" TargetType="Popup">
+            <Setter Property="AllowsTransparency" Value="True"/>
+            <Setter Property="Placement" Value="Center"/>
+            <Setter Property="StaysOpen" Value="False"/>
+        </Style>
+
+        <Style x:Key="ModalWindowStyle" TargetType="Border">
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="MaxHeight" Value="500"/>
+            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="0" Color="Black" Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModalHeaderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="CornerRadius" Value="8,8,0,0"/>
+            <Setter Property="Padding" Value="15"/>
+        </Style>
+
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                          Fill="{StaticResource WhiteColor}"
+                          Stretch="Uniform"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- ПАНЕЛИ И КОНТЕЙНЕРЫ -->
         <Style x:Key="SidebarStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
