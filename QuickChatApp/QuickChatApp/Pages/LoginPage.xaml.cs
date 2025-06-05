@@ -81,5 +81,10 @@ namespace QuickChatApp.Pages
 		{
 
 		}
-	}
+
+		private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+
+        }
+    }
 }

@@ -10,16 +10,37 @@
 
   <ItemGroup>
     <None Remove="Assets\Font\Montserrat-VariableFont_wght.ttf" />
+    <None Remove="Assets\Images\addicon.png" />
     <None Remove="Assets\Images\icon.png" />
+    <None Remove="Assets\Images\imgSend.png" />
+    <None Remove="Assets\Images\search.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\Font\Montserrat-VariableFont_wght.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\addicon.png" />
     <Resource Include="Assets\Images\icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\imgSend.png" />
+    <Resource Include="Assets\Images\search.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

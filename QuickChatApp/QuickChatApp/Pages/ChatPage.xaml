@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ChatPage">
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>
             <ColumnDefinition Width="*"/>
@@ -18,7 +18,7 @@
         <DockPanel Grid.Column="0">
             <Border DockPanel.Dock="Top" Background="{StaticResource BackgroundColor}" Padding="10,8">
                 <DockPanel>
-                    <Button DockPanel.Dock="Left" Style="{StaticResource IconButtonStyle}" 
+                    <Button x:Name="MenuButton" DockPanel.Dock="Left" Style="{StaticResource IconButtonStyle}" 
                             Width="30" Height="30">
                         <TextBlock Text="☰" FontSize="24" Foreground="{StaticResource TextSecondaryColor}"/>
                     </Button>
@@ -171,5 +171,49 @@
                 </Grid>
             </Border>
         </Grid>
+        <Popup x:Name="SidebarPopup"
+           Placement="Relative"
+           AllowsTransparency="True"
+           StaysOpen="False"
+           PopupAnimation="Slide"
+           HorizontalOffset="0"
+           VerticalOffset="0"
+           IsOpen="True">
+
+            <!-- Затемнение и сайдбар -->
+            <Grid Width="{Binding ActualWidth, ElementName=RootGrid}"
+              Height="{Binding ActualHeight, ElementName=RootGrid}"
+              Background="#80000000">
+                <!-- Полупрозрачный фон -->
+
+                <Border Width="240"
+                    Background="White"
+                    HorizontalAlignment="Left"
+                    Padding="20">
+                    <StackPanel>
+                        <Ellipse Width="50" Height="50" Fill="#5F9EA0"/>
+                        <TextBlock Text="UserName" FontSize="16" FontWeight="Bold" Margin="0,10"/>
+                        <Button Content="Настройки профиля" Margin="0,5"/>
+                        <Button Content="Список контактов" Margin="0,5"/>
+                        <Button Content="Выйти из аккаунта" Margin="0,40,0,0" Background="#e69b75" Foreground="White"/>
+                        <TextBlock Text="Версия 0.2025.00" FontSize="10" Foreground="Gray" Margin="0,20,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Popup>
+
+        <!-- Triggers: открыть Popup по нажатию кнопки -->
+        <Grid.Triggers>
+            <EventTrigger SourceName="MenuButton" RoutedEvent="Button.Click">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SidebarPopup"
+                                                   Storyboard.TargetProperty="IsOpen">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="True"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
     </Grid>
 </Page>

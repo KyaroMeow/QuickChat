@@ -29,7 +29,7 @@
                          GotFocus="TextBox_GotFocus"
                          LostFocus="TextBox_LostFocus" 
                          DockPanel.Dock="Top"
-                         Text="Логин"/>
+                         Text="Логин" TextChanged="UsernameBox_TextChanged"/>
 
                 <Grid VerticalAlignment="Center"  DockPanel.Dock="Top" Background="Transparent" Margin="0,0,0,50">
                     <PasswordBox x:Name="PasswordBox"
