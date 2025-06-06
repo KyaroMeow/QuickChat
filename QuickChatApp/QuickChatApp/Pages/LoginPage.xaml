@@ -24,6 +24,7 @@
                 <TextBlock Text="Авторизация" Style="{StaticResource AuthTitleStyle}" DockPanel.Dock="Top"/>
 
                 <TextBox x:Name="UsernameBox"
+                           Foreground="#5C9EAD"
                          
                          Style="{StaticResource RoundedTextBoxStyle}"
                          Tag="Логин"
@@ -34,11 +35,16 @@
 
                 <Grid VerticalAlignment="Center"  DockPanel.Dock="Top" Background="Transparent" Margin="0,0,0,50">
                     <PasswordBox x:Name="PasswordBox"
-                             Style="{StaticResource RoundedPasswordBoxStyle}"/>
+                             Style="{StaticResource RoundedPasswordBoxStyle}"
+                             VerticalContentAlignment="Center"
+                             VerticalAlignment="Center"
+                             GotFocus="PasswordBox_GotFocus"
+                             LostFocus="PasswordBox_LostFocus"
+                             PasswordChanged="PasswordBox_PasswordChanged"/>
                     <TextBlock x:Name="PasswordHint"
                            Text="Пароль"
-                           Foreground="{StaticResource PrimaryColor}"
-                           Margin="10,0,0,1"
+                           Foreground="#5C9EAD"
+                           Margin="11,0,0,0"
                            VerticalAlignment="Center"   
                            IsHitTestVisible="False"
                            FontSize="16"

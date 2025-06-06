@@ -84,6 +84,7 @@
         <!-- ПОЛЯ ВВОДА -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}">
             <Setter Property="Padding" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -102,7 +103,8 @@
         </Style>
 
         <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource BaseInputStyle}">
-            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="PasswordChar" Value="*"/>
             <Setter Property="Template">

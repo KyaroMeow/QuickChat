@@ -24,8 +24,8 @@ namespace QuickChatApp.Pages
             if (textBox.Text == textBox.Tag.ToString())
             {
                 textBox.Text = "";
-                textBox.Foreground = Brushes.Black;
-            }
+                textBox.Foreground = (Brush)textBox.FindResource("PrimaryColor");
+			}
         }
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -33,8 +33,8 @@ namespace QuickChatApp.Pages
             if (string.IsNullOrEmpty(textBox.Text))
             {
                 textBox.Text = textBox.Tag.ToString();
-                textBox.Foreground = Brushes.Gray;
-            }
+                textBox.Foreground = (Brush)textBox.FindResource("PrimaryColor");
+			}
         }
 
         private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
