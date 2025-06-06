@@ -49,7 +49,6 @@ namespace QuickChatApp.Pages
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Проверка на пустые поля
             if (string.IsNullOrEmpty(UsernameBox.Text) || UsernameBox.Text == "Логин" ||
                 string.IsNullOrEmpty(PasswordBox.Password))
             {
@@ -65,13 +64,12 @@ namespace QuickChatApp.Pages
                     Password = AuthApiClient.HashPassword(PasswordBox.Password)
                 };
 
-                // Вызов API для аутентификации
                 var user = await AuthApiClient.Instance.LoginAsync(loginDto);
 
                 if (user != null)
                 {
-                    // Успешный вход - переход в чат
-                    NavigationService.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative));
+                    // Передаем пользователя в ChatPage
+                    NavigationService.Navigate(new ChatPage(user));
                 }
             }
             catch (Exception ex)

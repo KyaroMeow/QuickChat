@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using WebApplication2.DTO;
 
 namespace QuickChatApp.Pages
 {
@@ -12,36 +13,88 @@ namespace QuickChatApp.Pages
     public partial class ChatPage : Page
     {
         public ObservableCollection<Contact> Contacts { get; set; }
-        public ChatPage()
+        private UserDTO _currentUser;
+
+        public ChatPage(UserDTO currentUser)
         {
-
             InitializeComponent();
-            // Инициализация коллекции контактов
-            Contacts = new ObservableCollection<Contact>
-            {
-                new Contact { Name = "Анна Петрова", LastMessage = "Привет! Чат работает?", AvatarColor = Brushes.LightBlue },
-                new Contact { Name = "Михаил Козлов", LastMessage = "Увидимся в quickchat`е!", AvatarColor = Brushes.LightGreen },
-               new Contact { Name = "Рабочая группа", LastMessage = "Документация уже в процессе!", AvatarColor = Brushes.LightSalmon },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
-                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen }
-
-            };
-
+            _currentUser = currentUser;
+            Contacts = new ObservableCollection<Contact>();
             DataContext = this;
+
+            LoadUserData();
+            LoadContactsAsync();
 
             MessageInput.GotFocus += MessageInput_GotFocus;
             MessageInput.LostFocus += MessageInput_LostFocus;
             SidebarPopup.IsOpen = false;
+        }
+
+        private void LoadUserData()
+        {
+            // Установка данных текущего пользователя
+            if (_currentUser != null)
+            {
+                // Здесь можно загрузить аватар, если он есть
+                // Для примера просто установим имя пользователя
+                UserNameTextBlock.Text = _currentUser.Username;
+                UserStatusTextBlock.Text = _currentUser.IsOnline ? "online" : "offline";
+            }
+        }
+
+        private async void LoadContactsAsync()
+        {
+            try
+            {
+                // Здесь должен быть запрос к API для получения контактов
+                // Пока используем заглушку, но с реальными данными пользователя
+                var contacts = await GetContactsFromApi(_currentUser.Id);
+
+                Contacts.Clear();
+                foreach (var contact in contacts)
+                {
+                    Contacts.Add(new Contact
+                    {
+                        Name = contact.Username,
+                        LastMessage = contact.IsOnline ? "online" : "offline",
+                        AvatarColor = GetRandomColorBrush(),
+                        IsOnline = contact.IsOnline
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки контактов: {ex.Message}");
+            }
+        }
+
+        private async Task<List<UserDTO>> GetContactsFromApi(int userId)
+        {
+            // Заглушка - в реальности здесь должен быть запрос к API
+            // Например: return await ChatApiClient.Instance.GetUserContactsAsync(userId);
+
+            // Временная заглушка с тестовыми данными
+            return new List<UserDTO>
+            {
+                new UserDTO { Id = 2, Username = "Анна Петрова", IsOnline = true },
+                new UserDTO { Id = 3, Username = "Михаил Козлов", IsOnline = false },
+                new UserDTO { Id = 4, Username = "Елена Смирнова", IsOnline = true }
+            };
+        }
+
+        private Brush GetRandomColorBrush()
+        {
+            var colors = new[]
+            {
+                Brushes.LightBlue,
+                Brushes.LightGreen,
+                Brushes.LightSalmon,
+                Brushes.LightPink,
+                Brushes.LightGoldenrodYellow
+            };
+
+            var random = new Random();
+            return colors[random.Next(colors.Length)];
         }
 
         public class Contact

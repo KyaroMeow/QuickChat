@@ -224,15 +224,17 @@
                                         <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.2"/>
                                     </Ellipse.Effect>
                                 </Ellipse>
-                                <TextBlock Text="Иван Иванов" 
-                                       Margin="0,10,0,0"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       HorizontalAlignment="Center"/>
-                                <TextBlock Text="online" 
-                                       Foreground="{StaticResource TextSecondaryColor}"
-                                       FontSize="12"
-                                       HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="UserNameTextBlock" 
+           Text="Иван Иванов" 
+           Margin="0,10,0,0"
+           FontSize="16"
+           FontWeight="SemiBold"
+           HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="UserStatusTextBlock" 
+           Text="online" 
+           Foreground="{StaticResource TextSecondaryColor}"
+           FontSize="12"
+           HorizontalAlignment="Center"/>
                             </StackPanel>
 
                             <!-- Кнопочки -->
@@ -245,16 +247,16 @@
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Margin="0,5"
                                         Click="ContactsListButton_Click">
-                                    <TextBlock Text="Список контактов" Foreground="White"/>
-                                </Button>
+                                <TextBlock Text="Список контактов" Foreground="White"/>
+                            </Button>
                         </StackPanel>
-                                <Button Grid.Row="2"
+                        <Button Grid.Row="2"
                                         Style="{StaticResource LogoutButtonStyle}"
                                         Margin="20,0,20,20"
                                         HorizontalAlignment="Stretch"
                                         Click="LogoutButton_Click">
-                                    <TextBlock Text="Выйти из аккаунта" Foreground="White"/>
-                                </Button>
+                            <TextBlock Text="Выйти из аккаунта" Foreground="White"/>
+                        </Button>
                         <Label Grid.Row="2" Content="Версия 2.06062025" FontSize="10" Padding="23,4" VerticalAlignment="Bottom" Foreground="{StaticResource SurfaceColor}" FontWeight="ExtraLight"/>
                     </Grid>
                 </Border>
