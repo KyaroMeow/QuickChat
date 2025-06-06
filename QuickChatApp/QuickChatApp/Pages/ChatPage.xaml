@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:QuickChatApp.Pages"
-      xmlns:converters="clr-namespace:QuickChatApp.Converters"
+      xmlns:converters="clr-namespace:QuickChatApp.Assets.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ChatPage"
@@ -135,9 +135,6 @@
                         </DockPanel>
                     </Border>
 
-                    <!-- Messages Area -->
-                    <!-- Messages Area -->
-                    <!-- Messages Area -->
                     <ScrollViewer Grid.Row="1" 
               Style="{StaticResource MessagesScrollViewerStyle}"
               x:Name="MessagesScrollViewer">
@@ -146,31 +143,39 @@
                   Margin="2">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <!-- Определяем стиль сообщения в зависимости от отправителя -->
-                                    <Border Style="{Binding SenderId, 
-                        Converter={StaticResource MessageStyleConverter}, 
-                        ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
-                        Margin="8,5">
-                                        <StackPanel>
-                                            <!-- Текст сообщения -->
-                                            <TextBlock Text="{Binding Text}" 
-                                   Style="{Binding SenderId, 
-                                          Converter={StaticResource MessageTextStyleConverter}, 
-                                          ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
-                                   TextWrapping="Wrap"
-                                   MaxWidth="350"/>
+                                    <!-- Контейнер для правильного выравнивания -->
+                                    <Grid Margin="0,2">
+                                        <!-- Border с динамическим стилем -->
+                                        <Border Style="{Binding SenderId, 
+                                   Converter={StaticResource MessageStyleConverter}, 
+                                   ConverterParameter={Binding CurrentUserId, RelativeSource={RelativeSource AncestorType=Page}}}">
+                                            <StackPanel>
+                                                <!-- Текст сообщения -->
+                                                <TextBlock Text="{Binding Text}" 
+                                       Style="{Binding SenderId, 
+                                              Converter={StaticResource MessageTextStyleConverter}, 
+                                              ConverterParameter={Binding CurrentUserId, RelativeSource={RelativeSource AncestorType=Page}}}"
+                                       TextWrapping="Wrap"/>
 
-                                            <!-- Время сообщения -->
-                                            <TextBlock Text="{Binding SentAt, StringFormat=HH:mm}" 
-                                   Style="{Binding SenderId, 
-                                          Converter={StaticResource MessageTimeStyleConverter}, 
-                                          ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
-                                   HorizontalAlignment="Right"
-                                   Margin="0,5,0,0"/>
-                                        </StackPanel>
-                                    </Border>
+                                                <!-- Время сообщения -->
+                                                <TextBlock Text="{Binding SentAt, StringFormat='{}{0:HH:mm}'}" 
+                                       Style="{Binding SenderId, 
+                                              Converter={StaticResource MessageTimeStyleConverter}, 
+                                              ConverterParameter={Binding CurrentUserId, RelativeSource={RelativeSource AncestorType=Page}}}"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+
+                            <!-- Настройка панели для корректного отображения -->
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                         </ItemsControl>
                     </ScrollViewer>
 

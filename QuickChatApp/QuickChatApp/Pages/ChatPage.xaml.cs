@@ -5,47 +5,74 @@ using System.Windows.Input;
 using System.Windows.Media;
 using QuickChatApp.WorkAPI;
 using WebApplication2.DTO;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Threading;
 
 namespace QuickChatApp.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для ChatPage.xaml
-    /// </summary>
-    public partial class ChatPage : Page
-    {
+	/// <summary>
+	/// Логика взаимодействия для ChatPage.xaml
+	/// </summary>
+	public partial class ChatPage : Page, INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
 
-       
-        public ObservableCollection<Contact> Contacts { get; set; }
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		public ObservableCollection<Contact> Contacts { get; set; }
         public ObservableCollection<MessageDTO> Messages { get; set; }
         private UserDTO _currentUser;
         private int _currentChatId = -1; // Текущий выбранный чат
 
         public static readonly DependencyProperty CurrentUserIdProperty =
         DependencyProperty.Register("CurrentUserId", typeof(int), typeof(ChatPage));
-       public ChatPage(UserDTO currentUser)
-{
-    InitializeComponent();
-    Contacts = new ObservableCollection<Contact>();
-    Messages = new ObservableCollection<MessageDTO>();
-    _currentUser = currentUser;
-    
-    // Устанавливаем CurrentUserId
-    CurrentUserId = _currentUser.Id;
-    
-    DataContext = this;
-    LoadContactsAsync();
-    
-    MessageInput.GotFocus += MessageInput_GotFocus;
-    MessageInput.LostFocus += MessageInput_LostFocus;
-    SidebarPopup.IsOpen = false;
-}
-        public int CurrentUserId
-        {
-            get { return (int)GetValue(CurrentUserIdProperty); }
-            set { SetValue(CurrentUserIdProperty, value); }
-        }
+		public ChatPage(UserDTO currentUser)
+		{
+			InitializeComponent();
+			Contacts = new ObservableCollection<Contact>();
+			Messages = new ObservableCollection<MessageDTO>();
+			_currentUser = currentUser;
 
-        private async void LoadContactsAsync()
+			// Устанавливаем CurrentUserId
+			CurrentUserId = _currentUser.Id;
+
+			DataContext = this;
+			LoadContactsAsync();
+
+			MessageInput.GotFocus += MessageInput_GotFocus;
+			MessageInput.LostFocus += MessageInput_LostFocus;
+			SidebarPopup.IsOpen = false;
+		}
+		private int _currentUserId;
+		public int CurrentUserId
+		{
+			get { return _currentUserId; }
+			set
+			{
+				_currentUserId = value;
+				OnPropertyChanged();
+			}
+		}
+		private void RefreshMessages()
+		{
+			// Создаем временную коллекцию
+			var tempMessages = Messages.ToList();
+			Messages.Clear();
+
+			foreach (var message in tempMessages)
+			{
+				Messages.Add(message);
+			}
+
+			// Или альтернативно - уведомляем об изменении CurrentUserId
+			OnPropertyChanged(nameof(CurrentUserId));
+		}
+
+		private async void LoadContactsAsync()
         {
             try
             {
@@ -89,28 +116,31 @@ namespace QuickChatApp.Pages
             return colors[random.Next(colors.Length)];
         }
 
-        private async void LoadChatMessages(int chatId)
-        {
-            try
-            {
-                Messages.Clear();
-                var messages = await MessageApiClient.Instance.GetChatMessagesAsync(chatId);
+		private async void LoadChatMessages(int chatId)
+		{
+			try
+			{
+				Messages.Clear();
+				var messages = await MessageApiClient.Instance.GetChatMessagesAsync(chatId);
 
-                foreach (var message in messages.OrderBy(m => m.SentAt))
-                {
-                    Messages.Add(message);
-                }
+				foreach (var message in messages.OrderBy(m => m.SentAt))
+				{
+					Messages.Add(message);
+				}
 
-                // Прокрутка к последнему сообщению
-                MessagesScrollViewer.ScrollToBottom();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка загрузки сообщений: {ex.Message}");
-            }
-        }
+				// Прокрутка к последнему сообщению
+				Dispatcher.BeginInvoke(new Action(() =>
+				{
+					MessagesScrollViewer.ScrollToBottom();
+				}), DispatcherPriority.ContextIdle);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка загрузки сообщений: {ex.Message}");
+			}
+		}
 
-        private async void CreateOrSelectChat(int contactId)
+		private async void CreateOrSelectChat(int contactId)
         {
             try
             {
@@ -145,40 +175,45 @@ namespace QuickChatApp.Pages
             }
         }
 
-        private async void SendButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentChatId == -1)
-            {
-                MessageBox.Show("Выберите чат для отправки сообщения");
-                return;
-            }
+		private async void SendButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_currentChatId == -1)
+			{
+				MessageBox.Show("Выберите чат для отправки сообщения");
+				return;
+			}
 
-            if (!string.IsNullOrEmpty(MessageInput.Text) && MessageInput.Text != "Введите сообщение...")
-            {
-                try
-                {
-                    var messageDto = new MessageCreateDTO
-                    {
-                        ChatId = _currentChatId,
-                        SenderId = _currentUser.Id,
-                        Text = MessageInput.Text
-                    };
+			if (!string.IsNullOrEmpty(MessageInput.Text) && MessageInput.Text != "Введите сообщение...")
+			{
+				try
+				{
+					var messageDto = new MessageCreateDTO
+					{
+						ChatId = _currentChatId,
+						SenderId = _currentUser.Id,
+						Text = MessageInput.Text
+					};
 
-                    var sentMessage = await MessageApiClient.Instance.SendMessageAsync(messageDto);
-                    Messages.Add(sentMessage);
+					var sentMessage = await MessageApiClient.Instance.SendMessageAsync(messageDto);
+					Messages.Add(sentMessage);
 
-                    MessageInput.Text = "";
-                    MessagesScrollViewer.ScrollToBottom();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка отправки сообщения: {ex.Message}");
-                }
-            }
-        }
+					MessageInput.Text = "";
 
-        // Обработчик выбора контакта из списка
-        private void ContactItem_Click(object sender, RoutedEventArgs e)
+					// Прокрутка к низу после небольшой задержки
+					Dispatcher.BeginInvoke(new Action(() =>
+					{
+						MessagesScrollViewer.ScrollToBottom();
+					}), DispatcherPriority.ContextIdle);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Ошибка отправки сообщения: {ex.Message}");
+				}
+			}
+		}
+
+		// Обработчик выбора контакта из списка
+		private void ContactItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is Contact contact)
             {
