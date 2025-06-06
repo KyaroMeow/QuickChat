@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using QuickChatApp.WorkAPI;
+using WebApplication2.DTO;
 
 namespace QuickChatApp.Pages
 {
@@ -23,49 +15,69 @@ namespace QuickChatApp.Pages
         public LoginPage()
         {
             InitializeComponent();
-			SetPlaceholders();
+            SetPlaceholders();
 
-		}
-		private void SetPlaceholders()
-		{
-			// Установка placeholder для логина
-			UsernameBox.Text = "Логин";
-			UsernameBox.Foreground = Brushes.Gray;
+        }
+        private void SetPlaceholders()
+        {
+            // Установка placeholder для логина
+            UsernameBox.Text = "Логин";
+            UsernameBox.Foreground = Brushes.Gray;
 
-			// Установка placeholder для пароля (через событие Loaded)
-			PasswordBox.Loaded += (s, e) => SetPasswordPlaceholder();
-		}
-		private void SetPasswordPlaceholder()
-		{
-			if (string.IsNullOrEmpty(PasswordBox.Password))
-			{
-				PasswordBox.Background = new VisualBrush(new TextBlock()
-				{
-					Text = "Пароль",
-					Foreground = Brushes.Gray,
-					FontSize = 14,
-					Margin = new Thickness(5, 0, 0, 0),
-					VerticalAlignment = VerticalAlignment.Center
-				})
-				{ Stretch = Stretch.None, AlignmentX = AlignmentX.Left };
-			}
-		}
+            // Установка placeholder для пароля (через событие Loaded)
+            PasswordBox.Loaded += (s, e) => SetPasswordPlaceholder();
+        }
+        private void SetPasswordPlaceholder()
+        {
+            if (string.IsNullOrEmpty(PasswordBox.Password))
+            {
+                PasswordBox.Background = new VisualBrush(new TextBlock()
+                {
+                    Text = "Пароль",
+                    Foreground = Brushes.Gray,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 0, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Center
+                })
+                { Stretch = Stretch.None, AlignmentX = AlignmentX.Left };
+            }
+        }
         private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/RegisterPage.xaml", UriKind.Relative));
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Пример проверки логина и пароля
-            if (string.IsNullOrEmpty(UsernameBox.Text) || string.IsNullOrEmpty(PasswordBox.Password))
+            // Проверка на пустые поля
+            if (string.IsNullOrEmpty(UsernameBox.Text) || UsernameBox.Text == "Логин" ||
+                string.IsNullOrEmpty(PasswordBox.Password))
             {
                 MessageBox.Show("Введите логин и пароль");
                 return;
             }
 
-            // Здесь можно добавить проверку данных с сервера или локальной базы данных
-            NavigationService.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative));
+            try
+            {
+                var loginDto = new UserLoginDTO
+                {
+                    Login = UsernameBox.Text,
+                    Password = AuthApiClient.HashPassword(PasswordBox.Password)
+                };
+
+                // Вызов API для аутентификации
+                var user = await AuthApiClient.Instance.LoginAsync(loginDto);
+
+                if (user != null)
+                {
+                    // Успешный вход - переход в чат
+                    NavigationService.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка входа: {ex.Message}");
+            }
         }
         //Методы из xaml-элементов!!!!!!!
 
@@ -101,7 +113,7 @@ namespace QuickChatApp.Pages
         }
 
         private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
+        {
 
         }
     }

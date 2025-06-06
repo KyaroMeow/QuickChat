@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using QuickChatApp.WorkAPI;
+using WebApplication2.DTO;
 
 namespace QuickChatApp.Pages
 {
@@ -20,6 +12,7 @@ namespace QuickChatApp.Pages
     /// </summary>
     public partial class RegisterPage : Page
     {
+        private string _avatarUrl = "/Assets/Images/icon.png"; // Путь к аватару по умолчанию
         public RegisterPage()
         {
             InitializeComponent();
@@ -58,27 +51,50 @@ namespace QuickChatApp.Pages
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Пример проверки данных регистрации
-            if (string.IsNullOrEmpty(NameBox.Text) || string.IsNullOrEmpty(LoginBox.Text) || string.IsNullOrEmpty(PasswordBox.Password))
+            // Проверка на пустые поля
+            if (string.IsNullOrEmpty(NameBox.Text) || NameBox.Text == "Имя" ||
+                string.IsNullOrEmpty(LoginBox.Text) || LoginBox.Text == "Логин" ||
+                string.IsNullOrEmpty(PasswordBox.Password))
             {
                 MessageBox.Show("Заполните все поля");
                 return;
             }
 
-            // Здесь можно добавить сохранение данных пользователя
-            NavigationService.Navigate(new Uri("/Pages/LoginPage.xaml", UriKind.Relative));
+            try
+            {
+                var userDto = new UserCreateDTO
+                {
+                    Username = NameBox.Text,
+                    Login = LoginBox.Text,
+                    Password = AuthApiClient.HashPassword(PasswordBox.Password),
+                    AvatarUrl = _avatarUrl
+                };
+
+                // Вызов API для регистрации
+                var user = await AuthApiClient.Instance.RegisterAsync(userDto);
+
+                if (user != null)
+                {
+                    MessageBox.Show("Регистрация прошла успешно!");
+                    NavigationService.Navigate(new Uri("/Pages/LoginPage.xaml", UriKind.Relative));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка регистрации: {ex.Message}");
+            }
         }
 
         private void AvatarButton_Click(object sender, RoutedEventArgs e)
-		{
+        {
 
         }
 
-		private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-		{
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
 
-		}
-	}
+        }
+    }
 }
