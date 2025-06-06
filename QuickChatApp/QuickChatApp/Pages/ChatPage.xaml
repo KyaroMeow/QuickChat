@@ -70,7 +70,7 @@
                             </DockPanel>
                         </Border>
                     </DockPanel>
-
+ 
                     <!-- ChatPage.xaml (измененная часть) -->
                     <ListBox x:Name="ChatsList" 
          Style="{StaticResource ChatListStyle}"
