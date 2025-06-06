@@ -64,9 +64,9 @@ namespace QuickChatApp.Pages
                     Password = AuthApiClient.HashPassword(PasswordBox.Password)
                 };
 
-                var user = await AuthApiClient.Instance.LoginAsync(loginDto);
+				var user = await AuthApiClient.Instance.LoginAsync(loginDto);
 
-                if (user != null)
+				if (user != null)
                 {
 					var chatPage = new ChatPage();
 					chatPage.Initialize(user);
