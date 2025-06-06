@@ -379,8 +379,8 @@
 
         <!-- САЙДБАР -->
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -397,20 +397,14 @@
                                       VerticalAlignment="Center"
                                       Margin="{TemplateBinding Padding}"/>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#F0F0F0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="LogoutButtonStyle" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
-            <Setter Property="Background" Value="#FFF0F0"/>
+            <Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
             <Setter Property="Foreground" Value="#E74C3C"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <!-- avatar style -->
@@ -436,10 +430,10 @@
             <Setter Property="Margin" Value="10,0"/>
         </Style>
 
-        <Style x:Key="CancelButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+        <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource LoginButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="Margin" Value="10,0"/>
@@ -457,7 +451,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#E0E0E0"/>
+                                <Setter TargetName="Border" Property="Background" Value="#C88567"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -473,10 +467,10 @@
         </Style>
 
         <Style x:Key="ModalWindowStyle" TargetType="Border">
-            <Setter Property="Width" Value="350"/>
-            <Setter Property="MaxHeight" Value="500"/>
-            <Setter Property="Background" Value="{StaticResource WhiteColor}"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="MaxHeight" Value="450"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+            <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect BlurRadius="20" ShadowDepth="0" Color="Black" Opacity="0.2"/>
@@ -484,24 +478,29 @@
             </Setter>
         </Style>
 
-        <Style x:Key="ModalHeaderStyle" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="CornerRadius" Value="8,8,0,0"/>
-            <Setter Property="Padding" Value="15"/>
+        <Style x:Key="ContactsPanelView" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
         <Style x:Key="CloseButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Width" Value="24"/>
-            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
                             <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
-                          Fill="{StaticResource WhiteColor}"
+                          Fill="{StaticResource TextSecondaryColor}"
                           Stretch="Uniform"/>
                         </Grid>
                     </ControlTemplate>
@@ -550,7 +549,7 @@
         <!-- СКРОЛЛБАРЫ -->
         <Style x:Key="MessagesScrollViewerStyle" TargetType="ScrollViewer">
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
             <Setter Property="Background" Value="Transparent"/>
         </Style>
 

@@ -24,6 +24,7 @@
                 <TextBlock Text="Авторизация" Style="{StaticResource AuthTitleStyle}" DockPanel.Dock="Top"/>
 
                 <TextBox x:Name="UsernameBox"
+                         
                          Style="{StaticResource RoundedTextBoxStyle}"
                          Tag="Логин"
                          GotFocus="TextBox_GotFocus"

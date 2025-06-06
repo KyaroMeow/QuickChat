@@ -22,15 +22,15 @@
                     Padding="10,8">
                 <DockPanel>
                     <Button x:Name="MenuButton" 
-        DockPanel.Dock="Left" 
-        Style="{StaticResource IconButtonStyle}" 
-        Width="30" 
-        Height="30"
-        Click="MenuButton_Click">
+                        DockPanel.Dock="Left" 
+                        Style="{StaticResource IconButtonStyle}" 
+                        Width="30" 
+                        Height="30"
+                        Click="MenuButton_Click">
 
                         <TextBlock Text="☰" 
-               FontSize="24" 
-               Foreground="{StaticResource TextSecondaryColor}"/>
+                           FontSize="24" 
+                           Foreground="{StaticResource TextSecondaryColor}"/>
                     </Button>
 
                     <StackPanel Orientation="Horizontal" 
@@ -64,18 +64,18 @@
                                        Width="15" 
                                        Height="15" 
                                        Margin="5" />
+                                <Label Content="Поиск чатов" Margin="0,4"/>
                                 <TextBox Style="{StaticResource SearchBoxStyle}"
-                                         Text="Поиск чатов"
                                          Margin="0,4"/>
                             </DockPanel>
                         </Border>
                     </DockPanel>
- 
+
                     <!-- ChatPage.xaml (измененная часть) -->
                     <ListBox x:Name="ChatsList" 
-         Style="{StaticResource ChatListStyle}"
-         ItemContainerStyle="{StaticResource ChatItemStyle}"
-         ItemsSource="{Binding Contacts}">
+                         Style="{StaticResource ChatListStyle}"
+                         ItemContainerStyle="{StaticResource ChatItemStyle}"
+                         ItemsSource="{Binding Contacts}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -194,17 +194,17 @@
 
         <!--  Popup  -->
         <Popup x:Name="SidebarPopup"
-       Placement="Relative"
-       AllowsTransparency="True"
-       StaysOpen="False"
-       HorizontalOffset="0"
-       VerticalOffset="0"
-       IsOpen="False">
+               Placement="Relative"
+               AllowsTransparency="True"
+               StaysOpen="False"
+               HorizontalOffset="0"
+               VerticalOffset="0"
+               IsOpen="False">
             <Grid x:Name="OverlayGrid" 
-          Width="{Binding ActualWidth, ElementName=RootGrid}"
-          Height="{Binding ActualHeight, ElementName=RootGrid}"
-          Background="#80000000"
-          MouseLeftButtonDown="OverlayGrid_MouseLeftButtonDown">
+                  Width="{Binding ActualWidth, ElementName=RootGrid}"
+                  Height="{Binding ActualHeight, ElementName=RootGrid}"
+                  Background="#80000000"
+                  MouseLeftButtonDown="OverlayGrid_MouseLeftButtonDown">
 
                 <Border Width="240"
                 Background="White"
@@ -215,67 +215,47 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
-                        <!-- Заголовок с кнопкой закрытия -->
-                        <Border Grid.Row="0" 
-                        Background="{StaticResource PrimaryColor}"
-                        Padding="15,10">
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right"
-                                Style="{StaticResource IconButtonStyle}"
-                                Click="CloseSidebarButton_Click">
-                                    <Image Source="/Assets/Images/close.png" Width="15" Height="15"/>
-                                </Button>
-                                <TextBlock Text="Меню" 
-                                   Foreground="{StaticResource WhiteColor}"
-                                   FontSize="16"
-                                   FontWeight="Bold"/>
-                            </DockPanel>
-                        </Border>
-
                         <!-- Основное содержимое сайдбара -->
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <StackPanel Margin="20,15">
-                                <!-- Аватар и имя пользователя -->
-                                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,20">
-                                    <Ellipse Width="70" Height="70" Fill="{StaticResource SecondaryColor}">
-                                        <Ellipse.Effect>
-                                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2"/>
-                                        </Ellipse.Effect>
-                                    </Ellipse>
-                                    <TextBlock Text="Иван Иванов" 
+                        <StackPanel Grid.Row="1" Margin="15,10">
+                            <!-- Аватар и имя пользователя -->
+                            <StackPanel HorizontalAlignment="Center" Margin="0,0,0,10">
+                                <Ellipse Width="70" Height="70" Fill="{StaticResource PrimaryColor}">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.2"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock Text="Иван Иванов" 
                                        Margin="0,10,0,0"
                                        FontSize="16"
-                                       FontWeight="Bold"
+                                       FontWeight="SemiBold"
                                        HorizontalAlignment="Center"/>
-                                    <TextBlock Text="online" 
+                                <TextBlock Text="online" 
                                        Foreground="{StaticResource TextSecondaryColor}"
                                        FontSize="12"
                                        HorizontalAlignment="Center"/>
-                                </StackPanel>
-
-                                <!-- Кнопочки -->
-                                <Button Content="Настройки профиля" 
-        Style="{StaticResource SidebarButtonStyle}"
-        Margin="0,5"
-        Click="OpenProfileEditPopup_Click"/>
-                                <Button Content="Список контактов" 
-        Style="{StaticResource SidebarButtonStyle}"
-        Margin="0,5"
-        Click="ContactsListButton_Click"/>
-
                             </StackPanel>
-                        </ScrollViewer>
 
-                        <!-- Кнопка выхода -->
-                        <!-- Обновите кнопку выхода в сайдбаре -->
-                        <Button Grid.Row="2"
-        Content="Выйти из аккаунта" 
-        Style="{StaticResource LogoutButtonStyle}"
-        Margin="20,0,20,20"
-        HorizontalAlignment="Stretch"
-        Click="LogoutButton_Click"/>
-                        <!-- Добавьте этот Click -->
+                            <!-- Кнопочки -->
+                            <Button     Style="{StaticResource SidebarButtonStyle}"
+                                        Margin="0,5"
+                                        Click="OpenProfileEditPopup_Click">
+                                <TextBlock Text="Настройки профиля" Foreground="White"/>
+                            </Button>
+                            <Button
+                                        Style="{StaticResource SidebarButtonStyle}"
+                                        Margin="0,5"
+                                        Click="ContactsListButton_Click">
+                                    <TextBlock Text="Список контактов" Foreground="White"/>
+                                </Button>
+                        </StackPanel>
+                                <Button Grid.Row="2"
+                                        Style="{StaticResource LogoutButtonStyle}"
+                                        Margin="20,0,20,20"
+                                        HorizontalAlignment="Stretch"
+                                        Click="LogoutButton_Click">
+                                    <TextBlock Text="Выйти из аккаунта" Foreground="White"/>
+                                </Button>
+                        <Label Grid.Row="2" Content="Версия 2.06062025" FontSize="10" Padding="23,4" VerticalAlignment="Bottom" Foreground="{StaticResource SurfaceColor}" FontWeight="ExtraLight"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -283,45 +263,38 @@
         </Popup>
         <!-- Popup contacts -->
         <Popup x:Name="ContactsPopup"
-       Style="{StaticResource ContactsPopupStyle}"
-       IsOpen="False">
-            <Border Style="{StaticResource ModalWindowStyle}">
-                <Grid>
+               Style="{StaticResource ContactsPopupStyle}"
+               IsOpen="False">
+            <Border Style="{StaticResource ModalWindowStyle}" Height="400" Width="350">
+                <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <!-- Шапка окна -->
-                    <Border Style="{StaticResource ModalHeaderStyle}"
-                    Grid.Row="0">
+                    <Border Padding="5"
+                        Grid.Row="0">
                         <DockPanel>
                             <TextBlock Text="Список контактов"
                                FontSize="16"
-                               FontWeight="Bold"
-                               Foreground="{StaticResource WhiteColor}"/>
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryColor}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
                             <Button DockPanel.Dock="Right"
                             Style="{StaticResource CloseButtonStyle}"
                             Click="CloseContactsPopup_Click"/>
                         </DockPanel>
                     </Border>
-
-                    <!-- Содержимое окна -->
-                    <ScrollViewer Grid.Row="1"
-                          Padding="15">
-                        <StackPanel>
-                            <!-- Заглушка для списка контактов -->
-                            <TextBlock Text="Здесь будет список контактов"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="0,50"
-                               Foreground="{StaticResource TextSecondaryColor}"/>
-
-                            <!-- Пример контакта -->
-                            <Border Background="{StaticResource BackgroundColor}"
-                            CornerRadius="5"
-                            Padding="10"
-                            Margin="0,5">
+                    <ListBox Grid.Row="1"
+                             Padding="15"
+                             Style="{StaticResource ChatListStyle}"
+                             ItemContainerStyle="{StaticResource ChatItemStyle}"
+                             ItemsSource="{Binding Contacts}">
+                        <!--ЗДЕСЬ ВСТАВИТЬ ДАННЫЕ СО СПИСКОМ КОНТАКТОВ ВМЕСТО CONTACTS а ну кст или нет-->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="40" Height="40" Fill="{StaticResource SecondaryColor}"/>
                                     <StackPanel Margin="10,0">
@@ -329,17 +302,17 @@
                                         <TextBlock Text="online" Style="{StaticResource LastMessageStyle}"/>
                                     </StackPanel>
                                 </StackPanel>
-                            </Border>
-
-                        </StackPanel>
-                    </ScrollViewer>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <!-- Содержимое окна -->
                 </Grid>
             </Border>
         </Popup>
         <!-- Добавьте этот Popup в ChatPage.xaml -->
         <Popup x:Name="LogoutConfirmationPopup"
-       Style="{StaticResource ContactsPopupStyle}"
-       IsOpen="False">
+               Style="{StaticResource ContactsPopupStyle}"
+               IsOpen="False">
             <Border Style="{StaticResource ModalWindowStyle}"
             Width="300">
                 <Grid Margin="15">
@@ -371,20 +344,24 @@
                         HorizontalAlignment="Center"
                         Margin="0,15,0,0">
                         <Button x:Name="ConfirmLogoutButton"
-                        Content="Да"
                         Style="{StaticResource ConfirmationButtonStyle}"
-                        Click="ConfirmLogoutButton_Click"/>
-                        <Button Content="Нет"
+                        Click="ConfirmLogoutButton_Click">
+                            <TextBlock Text="Да" Foreground="{StaticResource WhiteColor}"/>
+                        </Button>
+                        <Button 
                         Style="{StaticResource CancelButtonStyle}"
-                        Click="CancelLogoutButton_Click"/>
+                        Click="CancelLogoutButton_Click">
+                            <TextBlock Text="Нет" Foreground="{StaticResource WhiteColor}"/>
+
+                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>
         </Popup>
         <!-- Добавьте этот Popup в ChatPage.xaml -->
         <Popup x:Name="ProfileEditPopup"
-       Style="{StaticResource ContactsPopupStyle}"
-       IsOpen="False">
+           Style="{StaticResource ContactsPopupStyle}"
+           IsOpen="False">
             <Border Style="{StaticResource ModalWindowStyle}"
             Width="320">
                 <Grid Margin="15">
