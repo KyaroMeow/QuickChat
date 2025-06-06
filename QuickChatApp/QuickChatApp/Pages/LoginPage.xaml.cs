@@ -50,39 +50,57 @@ namespace QuickChatApp.Pages
 				{ Stretch = Stretch.None, AlignmentX = AlignmentX.Left };
 			}
 		}
+        private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RegisterPage.xaml", UriKind.Relative));
+        }
 
-		//Методы из xaml-элементов!!!!!!!
-		private void LoginButton_Click(object sender, RoutedEventArgs e)
-		{
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Пример проверки логина и пароля
+            if (string.IsNullOrEmpty(UsernameBox.Text) || string.IsNullOrEmpty(PasswordBox.Password))
+            {
+                MessageBox.Show("Введите логин и пароль");
+                return;
+            }
 
-		}
+            // Здесь можно добавить проверку данных с сервера или локальной базы данных
+            NavigationService.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative));
+        }
+        //Методы из xaml-элементов!!!!!!!
 
-		private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
-		{
+        private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordHint.Visibility = Visibility.Collapsed;
+        }
 
-		}
+        private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(PasswordBox.Password))
+            {
+                PasswordHint.Visibility = Visibility.Visible;
+            }
+        }
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox.Text == textBox.Tag.ToString())
+            {
+                textBox.Text = "";
+                textBox.Foreground = Brushes.Black;
+            }
+        }
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.Text = textBox.Tag.ToString();
+                textBox.Foreground = Brushes.Gray;
+            }
+        }
 
-		private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void TextBox_LostFocus(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void RegisterHyperlink_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 
         }

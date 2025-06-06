@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace QuickChatApp.Pages
 {
@@ -20,9 +11,158 @@ namespace QuickChatApp.Pages
     /// </summary>
     public partial class ChatPage : Page
     {
+        public ObservableCollection<Contact> Contacts { get; set; }
         public ChatPage()
         {
+
             InitializeComponent();
+            // Инициализация коллекции контактов
+            Contacts = new ObservableCollection<Contact>
+            {
+                new Contact { Name = "Анна Петрова", LastMessage = "Привет! Чат работает?", AvatarColor = Brushes.LightBlue },
+                new Contact { Name = "Михаил Козлов", LastMessage = "Увидимся в quickchat`е!", AvatarColor = Brushes.LightGreen },
+               new Contact { Name = "Рабочая группа", LastMessage = "Документация уже в процессе!", AvatarColor = Brushes.LightSalmon },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen },
+                new Contact { Name = "Тестовый чатик", LastMessage = "Я здесь для заполнения!", AvatarColor = Brushes.LightGreen }
+
+            };
+
+            DataContext = this;
+
+            MessageInput.GotFocus += MessageInput_GotFocus;
+            MessageInput.LostFocus += MessageInput_LostFocus;
+            SidebarPopup.IsOpen = false;
+        }
+
+        public class Contact
+        {
+            public string Name { get; set; }
+            public string LastMessage { get; set; }
+            public Brush AvatarColor { get; set; }
+            public bool IsOnline { get; set; }
+        }
+        private void MessageInput_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (MessageInput.Text == "Введите сообщение...")
+            {
+                MessageInput.Text = "";
+            }
+        }
+        // Открытие popup при нажатии на "Список контактов" в сайдбаре
+        private void ContactsListButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContactsPopup.IsOpen = true;
+        }
+
+        // Закрытие popup
+        private void CloseContactsPopup_Click(object sender, RoutedEventArgs e)
+        {
+            ContactsPopup.IsOpen = false;
+        }
+        // Обработчик кнопки выхода в сайдбаре
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogoutConfirmationPopup.IsOpen = true;
+        }
+
+        // Подтверждение выхода
+        private void ConfirmLogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogoutConfirmationPopup.IsOpen = false;
+            NavigationService.Navigate(new Uri("/Pages/LoginPage.xaml", UriKind.Relative));
+        }
+        // Открытие попапа (вызовите этот метод из кнопки в сайдбаре)
+        private void OpenProfileEditPopup_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileEditPopup.IsOpen = true;
+        }
+
+        // Закрытие попапа
+        private void CloseProfileEditPopup_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileEditPopup.IsOpen = false;
+        }
+
+        // Применение изменений
+        private void ApplyProfileChanges_Click(object sender, RoutedEventArgs e)
+        {
+            // Здесь будет логика сохранения изменений
+            // Пока просто закроем попап
+            ProfileEditPopup.IsOpen = false;
+
+            // Можно добавить уведомление об успешном сохранении
+            MessageBox.Show("Изменения сохранены!", "Успех",
+                           MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        // Отмена выхода
+        private void CancelLogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogoutConfirmationPopup.IsOpen = false;
+        }
+        private void MessageInput_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(MessageInput.Text))
+            {
+                MessageInput.Text = "Введите сообщение...";
+            }
+        }
+        private void CloseSidebarButton_Click(object sender, RoutedEventArgs e)
+        {
+            SidebarPopup.IsOpen = false;
+        }
+        private void MenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            SidebarPopup.IsOpen = true;
+        }
+
+
+
+        private void OverlayGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Закрываем сайдбар при клике на затемненную область
+            var element = e.OriginalSource as FrameworkElement;
+            if (element?.Name != "SidebarPopup" && SidebarPopup.IsOpen)
+            {
+                SidebarPopup.IsOpen = false;
+            }
+        }
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MessageInput.Text) && MessageInput.Text != "Введите сообщение...")
+            {
+                // Создаем новое сообщение
+                Border messageBorder = new Border();
+                messageBorder.Style = (Style)FindResource("OutgoingMessageStyle");
+
+                StackPanel stackPanel = new StackPanel();
+                TextBlock messageText = new TextBlock();
+                messageText.Text = MessageInput.Text;
+                messageText.Style = (Style)FindResource("OutgoingMessageTextStyle");
+
+                TextBlock timeText = new TextBlock();
+                timeText.Text = DateTime.Now.ToString("HH:mm");
+                timeText.Style = (Style)FindResource("OutgoingMessageTimeStyle");
+
+                stackPanel.Children.Add(messageText);
+                stackPanel.Children.Add(timeText);
+                messageBorder.Child = stackPanel;
+
+                MessagesPanel.Children.Add(messageBorder);
+                MessageInput.Text = "";
+
+                // Прокрутка вниз
+                MessagesScrollViewer.ScrollToBottom();
+            }
         }
     }
 }
