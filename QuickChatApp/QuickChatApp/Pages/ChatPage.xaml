@@ -4,9 +4,17 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:QuickChatApp.Pages"
+      xmlns:converters="clr-namespace:QuickChatApp.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ChatPage">
+      Title="ChatPage"
+      x:Name="ChatPageRoot">
+
+    <Page.Resources>
+        <converters:MessageStyleConverter x:Key="MessageStyleConverter"/>
+        <converters:MessageTextStyleConverter x:Key="MessageTextStyleConverter"/>
+        <converters:MessageTimeStyleConverter x:Key="MessageTimeStyleConverter"/>
+    </Page.Resources>
 
     <Grid x:Name="RootGrid">
         <Grid.ColumnDefinitions>
@@ -71,14 +79,14 @@
                         </Border>
                     </DockPanel>
 
-                    <!-- ChatPage.xaml (измененная часть) -->
                     <ListBox x:Name="ChatsList" 
                          Style="{StaticResource ChatListStyle}"
                          ItemContainerStyle="{StaticResource ChatItemStyle}"
                          ItemsSource="{Binding Contacts}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" 
+                                            MouseLeftButtonDown="ContactItem_Click">
                                     <Ellipse Width="28" Height="28" Fill="{Binding AvatarColor}"/>
                                     <StackPanel Margin="10,0" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Name}" Style="{StaticResource ContactNameStyle}"/>
@@ -117,59 +125,53 @@
                             <StackPanel DockPanel.Dock="Left" 
                                         Margin="5,0" 
                                         VerticalAlignment="Center">
-                                <TextBlock Text="Анна Петрова" 
+                                <TextBlock x:Name="ChatTitleTextBlock" 
+                                           Text="Выберите чат" 
                                            Style="{StaticResource ChatTitleStyle}"/>
-                                <TextBlock Text="в сети" 
+                                <TextBlock x:Name="ChatStatusTextBlock" 
+                                           Text="" 
                                            Style="{StaticResource LastMessageStyle}"/>
                             </StackPanel>
                         </DockPanel>
                     </Border>
 
                     <!-- Messages Area -->
+                    <!-- Messages Area -->
+                    <!-- Messages Area -->
                     <ScrollViewer Grid.Row="1" 
-                                  Style="{StaticResource MessagesScrollViewerStyle}"
-                                  x:Name="MessagesScrollViewer">
-                        <StackPanel x:Name="MessagesPanel" Margin="2">
-                            <!-- Incoming Message -->
-                            <Border Style="{StaticResource IncomingMessageStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Привет! Как дела? Давно не виделись!" 
-                                               Style="{StaticResource MessageTextStyle}"/>
-                                    <TextBlock Text="14:32" 
-                                               Style="{StaticResource MessageTimeStyle}"/>
-                                </StackPanel>
-                            </Border>
+              Style="{StaticResource MessagesScrollViewerStyle}"
+              x:Name="MessagesScrollViewer">
+                        <ItemsControl x:Name="MessagesPanel" 
+                  ItemsSource="{Binding Messages}"
+                  Margin="2">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <!-- Определяем стиль сообщения в зависимости от отправителя -->
+                                    <Border Style="{Binding SenderId, 
+                        Converter={StaticResource MessageStyleConverter}, 
+                        ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
+                        Margin="8,5">
+                                        <StackPanel>
+                                            <!-- Текст сообщения -->
+                                            <TextBlock Text="{Binding Text}" 
+                                   Style="{Binding SenderId, 
+                                          Converter={StaticResource MessageTextStyleConverter}, 
+                                          ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="350"/>
 
-                            <!-- Outgoing Message -->
-                            <Border Style="{StaticResource OutgoingMessageStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Привет! Все отлично, спасибо! А у тебя как?" 
-                                               Style="{StaticResource OutgoingMessageTextStyle}"/>
-                                    <TextBlock Text="14:35" 
-                                               Style="{StaticResource OutgoingMessageTimeStyle}"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Incoming Message -->
-                            <Border Style="{StaticResource IncomingMessageStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Тоже все хорошо! Может встретимся на выходных?" 
-                                               Style="{StaticResource MessageTextStyle}"/>
-                                    <TextBlock Text="14:40" 
-                                               Style="{StaticResource MessageTimeStyle}"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Outgoing Message -->
-                            <Border Style="{StaticResource OutgoingMessageStyle}">
-                                <StackPanel>
-                                    <TextBlock Text="Отличная идея! Давай в субботу встретимся в парке в 2 часа?" 
-                                               Style="{StaticResource OutgoingMessageTextStyle}"/>
-                                    <TextBlock Text="14:42" 
-                                               Style="{StaticResource OutgoingMessageTimeStyle}"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
+                                            <!-- Время сообщения -->
+                                            <TextBlock Text="{Binding SentAt, StringFormat=HH:mm}" 
+                                   Style="{Binding SenderId, 
+                                          Converter={StaticResource MessageTimeStyleConverter}, 
+                                          ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,5,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </ScrollViewer>
 
                     <!-- Message Input -->

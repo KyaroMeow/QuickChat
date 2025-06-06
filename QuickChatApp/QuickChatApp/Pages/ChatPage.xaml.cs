@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using QuickChatApp.WorkAPI;
 using WebApplication2.DTO;
 
 namespace QuickChatApp.Pages
@@ -12,49 +13,54 @@ namespace QuickChatApp.Pages
     /// </summary>
     public partial class ChatPage : Page
     {
+
+       
         public ObservableCollection<Contact> Contacts { get; set; }
+        public ObservableCollection<MessageDTO> Messages { get; set; }
         private UserDTO _currentUser;
+        private int _currentChatId = -1; // Текущий выбранный чат
 
-        public ChatPage(UserDTO currentUser)
+        public static readonly DependencyProperty CurrentUserIdProperty =
+        DependencyProperty.Register("CurrentUserId", typeof(int), typeof(ChatPage));
+       public ChatPage(UserDTO currentUser)
+{
+    InitializeComponent();
+    Contacts = new ObservableCollection<Contact>();
+    Messages = new ObservableCollection<MessageDTO>();
+    _currentUser = currentUser;
+    
+    // Устанавливаем CurrentUserId
+    CurrentUserId = _currentUser.Id;
+    
+    DataContext = this;
+    LoadContactsAsync();
+    
+    MessageInput.GotFocus += MessageInput_GotFocus;
+    MessageInput.LostFocus += MessageInput_LostFocus;
+    SidebarPopup.IsOpen = false;
+}
+        public int CurrentUserId
         {
-            InitializeComponent();
-            _currentUser = currentUser;
-            Contacts = new ObservableCollection<Contact>();
-            DataContext = this;
-
-            LoadUserData();
-            LoadContactsAsync();
-
-            MessageInput.GotFocus += MessageInput_GotFocus;
-            MessageInput.LostFocus += MessageInput_LostFocus;
-            SidebarPopup.IsOpen = false;
-        }
-
-        private void LoadUserData()
-        {
-            // Установка данных текущего пользователя
-            if (_currentUser != null)
-            {
-                // Здесь можно загрузить аватар, если он есть
-                // Для примера просто установим имя пользователя
-                UserNameTextBlock.Text = _currentUser.Username;
-                UserStatusTextBlock.Text = _currentUser.IsOnline ? "online" : "offline";
-            }
+            get { return (int)GetValue(CurrentUserIdProperty); }
+            set { SetValue(CurrentUserIdProperty, value); }
         }
 
         private async void LoadContactsAsync()
         {
             try
             {
-                // Здесь должен быть запрос к API для получения контактов
-                // Пока используем заглушку, но с реальными данными пользователя
-                var contacts = await GetContactsFromApi(_currentUser.Id);
+                // Получаем список пользователей (контактов) через API
+                var users = await UserApiClient.Instance.GetUsersAsync();
+
+                // Исключаем текущего пользователя из списка контактов
+                var contacts = users.Where(u => u.Id != _currentUser.Id).ToList();
 
                 Contacts.Clear();
                 foreach (var contact in contacts)
                 {
                     Contacts.Add(new Contact
                     {
+                        Id = contact.Id,
                         Name = contact.Username,
                         LastMessage = contact.IsOnline ? "online" : "offline",
                         AvatarColor = GetRandomColorBrush(),
@@ -66,20 +72,6 @@ namespace QuickChatApp.Pages
             {
                 MessageBox.Show($"Ошибка загрузки контактов: {ex.Message}");
             }
-        }
-
-        private async Task<List<UserDTO>> GetContactsFromApi(int userId)
-        {
-            // Заглушка - в реальности здесь должен быть запрос к API
-            // Например: return await ChatApiClient.Instance.GetUserContactsAsync(userId);
-
-            // Временная заглушка с тестовыми данными
-            return new List<UserDTO>
-            {
-                new UserDTO { Id = 2, Username = "Анна Петрова", IsOnline = true },
-                new UserDTO { Id = 3, Username = "Михаил Козлов", IsOnline = false },
-                new UserDTO { Id = 4, Username = "Елена Смирнова", IsOnline = true }
-            };
         }
 
         private Brush GetRandomColorBrush()
@@ -97,8 +89,108 @@ namespace QuickChatApp.Pages
             return colors[random.Next(colors.Length)];
         }
 
+        private async void LoadChatMessages(int chatId)
+        {
+            try
+            {
+                Messages.Clear();
+                var messages = await MessageApiClient.Instance.GetChatMessagesAsync(chatId);
+
+                foreach (var message in messages.OrderBy(m => m.SentAt))
+                {
+                    Messages.Add(message);
+                }
+
+                // Прокрутка к последнему сообщению
+                MessagesScrollViewer.ScrollToBottom();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки сообщений: {ex.Message}");
+            }
+        }
+
+        private async void CreateOrSelectChat(int contactId)
+        {
+            try
+            {
+                // Проверяем, есть ли уже чат с этим пользователем
+                var userChats = await ChatApiClient.Instance.GetUserChatsAsync(_currentUser.Id);
+                var existingChat = userChats.FirstOrDefault(c =>
+                    !c.IsGroup && c.UserIds.Contains(contactId));
+
+                if (existingChat != null)
+                {
+                    _currentChatId = existingChat.Id;
+                    ChatTitleTextBlock.Text = Contacts.First(c => c.Id == contactId).Name;
+                    LoadChatMessages(_currentChatId);
+                }
+                else
+                {
+                    // Создаем новый чат
+                    var newChat = await ChatApiClient.Instance.CreateChatAsync(new ChatCreateDTO
+                    {
+                        Name = $"{_currentUser.Username} и {Contacts.First(c => c.Id == contactId).Name}",
+                        IsGroup = false,
+                        UserIds = new List<int> { _currentUser.Id, contactId }
+                    });
+
+                    _currentChatId = newChat.Id;
+                    ChatTitleTextBlock.Text = Contacts.First(c => c.Id == contactId).Name;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка создания/выбора чата: {ex.Message}");
+            }
+        }
+
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentChatId == -1)
+            {
+                MessageBox.Show("Выберите чат для отправки сообщения");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(MessageInput.Text) && MessageInput.Text != "Введите сообщение...")
+            {
+                try
+                {
+                    var messageDto = new MessageCreateDTO
+                    {
+                        ChatId = _currentChatId,
+                        SenderId = _currentUser.Id,
+                        Text = MessageInput.Text
+                    };
+
+                    var sentMessage = await MessageApiClient.Instance.SendMessageAsync(messageDto);
+                    Messages.Add(sentMessage);
+
+                    MessageInput.Text = "";
+                    MessagesScrollViewer.ScrollToBottom();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка отправки сообщения: {ex.Message}");
+                }
+            }
+        }
+
+        // Обработчик выбора контакта из списка
+        private void ContactItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is Contact contact)
+            {
+                CreateOrSelectChat(contact.Id);
+                ContactsPopup.IsOpen = false;
+            }
+        }
+
+        // Обновленный класс Contact
         public class Contact
         {
+            public int Id { get; set; }
             public string Name { get; set; }
             public string LastMessage { get; set; }
             public Brush AvatarColor { get; set; }
@@ -187,34 +279,6 @@ namespace QuickChatApp.Pages
             if (element?.Name != "SidebarPopup" && SidebarPopup.IsOpen)
             {
                 SidebarPopup.IsOpen = false;
-            }
-        }
-        private void SendButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(MessageInput.Text) && MessageInput.Text != "Введите сообщение...")
-            {
-                // Создаем новое сообщение
-                Border messageBorder = new Border();
-                messageBorder.Style = (Style)FindResource("OutgoingMessageStyle");
-
-                StackPanel stackPanel = new StackPanel();
-                TextBlock messageText = new TextBlock();
-                messageText.Text = MessageInput.Text;
-                messageText.Style = (Style)FindResource("OutgoingMessageTextStyle");
-
-                TextBlock timeText = new TextBlock();
-                timeText.Text = DateTime.Now.ToString("HH:mm");
-                timeText.Style = (Style)FindResource("OutgoingMessageTimeStyle");
-
-                stackPanel.Children.Add(messageText);
-                stackPanel.Children.Add(timeText);
-                messageBorder.Child = stackPanel;
-
-                MessagesPanel.Children.Add(messageBorder);
-                MessageInput.Text = "";
-
-                // Прокрутка вниз
-                MessagesScrollViewer.ScrollToBottom();
             }
         }
     }
