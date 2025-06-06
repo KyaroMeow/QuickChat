@@ -68,9 +68,10 @@ namespace QuickChatApp.Pages
 
                 if (user != null)
                 {
-                    // Передаем пользователя в ChatPage
-                    NavigationService.Navigate(new ChatPage(user));
-                }
+					var chatPage = new ChatPage();
+					chatPage.Initialize(user);
+					NavigationService.Navigate(chatPage);
+				}
             }
             catch (Exception ex)
             {

@@ -30,22 +30,23 @@ namespace QuickChatApp.Pages
 
         public static readonly DependencyProperty CurrentUserIdProperty =
         DependencyProperty.Register("CurrentUserId", typeof(int), typeof(ChatPage));
-		public ChatPage(UserDTO currentUser)
+		public ChatPage()
 		{
 			InitializeComponent();
 			Contacts = new ObservableCollection<Contact>();
 			Messages = new ObservableCollection<MessageDTO>();
-			_currentUser = currentUser;
-
-			// Устанавливаем CurrentUserId
-			CurrentUserId = _currentUser.Id;
-
 			DataContext = this;
-			LoadContactsAsync();
 
 			MessageInput.GotFocus += MessageInput_GotFocus;
 			MessageInput.LostFocus += MessageInput_LostFocus;
 			SidebarPopup.IsOpen = false;
+		}
+
+		public void Initialize(UserDTO currentUser)
+		{
+			_currentUser = currentUser;
+			CurrentUserId = _currentUser.Id;
+			LoadContactsAsync();
 		}
 		private int _currentUserId;
 		public int CurrentUserId
