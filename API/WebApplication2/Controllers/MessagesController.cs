@@ -33,7 +33,7 @@ namespace WebApplication2.Controllers
                 .ToListAsync();
         }
 
-        // GET: api/Messages/5
+        // GET: api/Messages/5`
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageDTO>> GetMessage(int id)
         {

@@ -13,6 +13,7 @@ public partial class QuickChatBaseContext : DbContext
     public QuickChatBaseContext(DbContextOptions<QuickChatBaseContext> options)
         : base(options)
     {
+        Database.Migrate();
     }
 
     public virtual DbSet<Chat> Chats { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,116 +10,68 @@ using WebApplication2.DTO;
 
 namespace QuickChatApp.WorkAPI
 {
-    internal class MessageApiClient : IMessageApiClient
+    internal class MessageApiClient
     {
+        private static readonly Lazy<MessageApiClient> _instance =
+            new Lazy<MessageApiClient>(() => new MessageApiClient());
+
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
 
-        public MessageApiClient(HttpClient httpClient, string baseUrl)
+        public static MessageApiClient Instance => _instance.Value;
+
+        private MessageApiClient()
         {
-            _httpClient = httpClient;
-            _baseUrl = baseUrl.TrimEnd('/');
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5213/")
+            };
         }
 
-        public async Task<IEnumerable<MessageDTO>> GetAllMessagesAsync()
+        // Получение всех сообщений
+        public async Task<List<MessageDTO>> GetAllMessagesAsync()
         {
-            var url = $"{_baseUrl}/api/Messages";
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync("api/Messages");
             response.EnsureSuccessStatusCode();
-
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<MessageDTO>>(responseJson);
+            return await response.Content.ReadFromJsonAsync<List<MessageDTO>>();
         }
 
-        public async Task<MessageDTO> GetMessageByIdAsync(int id)
+        // Получение сообщения по ID
+        public async Task<MessageDTO> GetMessageAsync(int id)
         {
-            var url = $"{_baseUrl}/api/Messages/{id}";
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync($"api/Messages/{id}");
             response.EnsureSuccessStatusCode();
-
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<MessageDTO>(responseJson);
+            return await response.Content.ReadFromJsonAsync<MessageDTO>();
         }
 
-        public async Task<IEnumerable<MessageDTO>> GetMessagesByChatIdAsync(int chatId)
+        // Получение сообщений чата
+        public async Task<List<MessageDTO>> GetChatMessagesAsync(int chatId)
         {
-            var url = $"{_baseUrl}/api/Messages/chat/{chatId}";
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync($"api/Messages/chat/{chatId}");
             response.EnsureSuccessStatusCode();
-
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<MessageDTO>>(responseJson);
+            return await response.Content.ReadFromJsonAsync<List<MessageDTO>>();
         }
 
-        public async Task<MessageDTO> CreateMessageAsync(MessageCreateDTO dto)
+        // Отправка сообщения
+        public async Task<MessageDTO> SendMessageAsync(MessageCreateDTO messageDto)
         {
-            var url = $"{_baseUrl}/api/Messages";
-            var json = JsonSerializer.Serialize(dto);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync(url, content);
+            var response = await _httpClient.PostAsJsonAsync("api/Messages", messageDto);
             response.EnsureSuccessStatusCode();
-
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<MessageDTO>(responseJson);
+            return await response.Content.ReadFromJsonAsync<MessageDTO>();
         }
 
-        public async Task UpdateMessageAsync(int id, MessageUpdateDTO dto)
+        // Обновление статуса прочтения
+        public async Task MarkAsReadAsync(int messageId, bool isRead = true)
         {
-            var url = $"{_baseUrl}/api/Messages/{id}";
-            var json = JsonSerializer.Serialize(dto);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PutAsync(url, content);
+            var updateDto = new MessageUpdateDTO { IsRead = isRead };
+            var response = await _httpClient.PutAsJsonAsync($"api/Messages/{messageId}", updateDto);
             response.EnsureSuccessStatusCode();
         }
 
+        // Удаление сообщения
         public async Task DeleteMessageAsync(int id)
         {
-            var url = $"{_baseUrl}/api/Messages/{id}";
-            var response = await _httpClient.DeleteAsync(url);
+            var response = await _httpClient.DeleteAsync($"api/Messages/{id}");
             response.EnsureSuccessStatusCode();
         }
     }
-    public interface IMessageApiClient
-    {
-        Task<IEnumerable<MessageDTO>> GetAllMessagesAsync();
-        Task<MessageDTO> GetMessageByIdAsync(int id);
-        Task<IEnumerable<MessageDTO>> GetMessagesByChatIdAsync(int chatId);
-        Task<MessageDTO> CreateMessageAsync(MessageCreateDTO dto);
-        Task UpdateMessageAsync(int id, MessageUpdateDTO dto);
-        Task DeleteMessageAsync(int id);
-    }
 }
-/*Интеграция с WPF
- * protected override void OnStartup(StartupEventArgs e)
-{
-    var services = new ServiceCollection();
-    var baseUrl = "https://api.example.com";
-    
-    // Настройка HttpClient
-    services.AddSingleton<HttpClient>(_ => new HttpClient
-    {
-        Timeout = TimeSpan.FromSeconds(30)
-    });
-    
-    // Регистрация API клиентов
-    services.AddSingleton<IAuthApiClient>(sp => 
-        new AuthApiClient(sp.GetRequiredService<HttpClient>(), baseUrl));
-        
-    services.AddSingleton<IChatApiClient>(sp =>
-        new ChatApiClient(sp.GetRequiredService<HttpClient>(), baseUrl));
-        
-    services.AddSingleton<IMessageApiClient>(sp =>
-        new MessageApiClient(sp.GetRequiredService<HttpClient>(), baseUrl));
-    
-    // Регистрация ViewModels
-    services.AddTransient<MainWindowViewModel>();
-    services.AddTransient<ChatViewModel>();
-    services.AddTransient<MessageViewModel>();
-    
-    ServiceProvider = services.BuildServiceProvider();
-    MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-    MainWindow.Show();
-}
-*/

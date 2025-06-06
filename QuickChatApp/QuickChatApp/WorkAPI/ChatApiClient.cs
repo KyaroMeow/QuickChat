@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using WebApplication2.DTO;
@@ -7,63 +8,37 @@ namespace QuickChatApp.WorkAPI
 {
     internal class ChatApiClient
     {
+        private static readonly Lazy<ChatApiClient> _instance =
+            new Lazy<ChatApiClient>(() => new ChatApiClient());
+
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
 
-        public ChatApiClient(HttpClient httpClient, string baseUrl)
+        public static ChatApiClient Instance => _instance.Value;
+
+        private ChatApiClient()
         {
-            _httpClient = httpClient;
-            _baseUrl = baseUrl.TrimEnd('/');
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5213/")
+            };
         }
 
-        public async Task<IEnumerable<ChatDTO>> GetUserChatsAsync(int userId)
+        // Получение чатов пользователя
+        public async Task<List<ChatDTO>> GetUserChatsAsync(int userId)
         {
-            var url = $"{_baseUrl}/api/chats?userId={userId}";
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync($"api/chats?userId={userId}");
             response.EnsureSuccessStatusCode();
 
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<ChatDTO>>(responseJson);
+            return await response.Content.ReadFromJsonAsync<List<ChatDTO>>();
         }
 
-        public async Task<ChatDTO> CreateChatAsync(ChatCreateDTO request)
+        // Создание нового чата
+        public async Task<ChatDTO> CreateChatAsync(ChatCreateDTO chatDto)
         {
-            var url = $"{_baseUrl}/api/chats";
-            var json = JsonSerializer.Serialize(request);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync(url, content);
+            var response = await _httpClient.PostAsJsonAsync("api/chats", chatDto);
             response.EnsureSuccessStatusCode();
 
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<ChatDTO>(responseJson);
+            return await response.Content.ReadFromJsonAsync<ChatDTO>();
         }
     }
 }
-/*Интеграция с WPF
- * protected override void OnStartup(StartupEventArgs e)
-{
-    var services = new ServiceCollection();
-    var baseUrl = "https://api.example.com";
-    
-    // Настройка HttpClient
-    services.AddSingleton<HttpClient>(_ => new HttpClient
-    {
-        Timeout = TimeSpan.FromSeconds(30)
-    });
-    
-    // Регистрация API клиентов
-    services.AddSingleton<IAuthApiClient>(sp => 
-        new AuthApiClient(sp.GetRequiredService<HttpClient>(), baseUrl));
-        
-    services.AddSingleton<IChatApiClient>(sp =>
-        new ChatApiClient(sp.GetRequiredService<HttpClient>(), baseUrl));
-    
-    // Регистрация ViewModels
-    services.AddTransient<MainWindowViewModel>();
-    
-    ServiceProvider = services.BuildServiceProvider();
-    MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-    MainWindow.Show();
-}
-*/

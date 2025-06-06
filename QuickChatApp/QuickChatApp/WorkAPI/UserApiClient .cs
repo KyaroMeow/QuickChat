@@ -1,76 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 using WebApplication2.DTO;
 
 namespace QuickChatApp.WorkAPI
 {
-    internal class UserApiClient
+    public class UserApiClient
     {
+        private static readonly Lazy<UserApiClient> _instance =
+        new Lazy<UserApiClient>(() => new UserApiClient());
+
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
 
-        public UserApiClient(HttpClient httpClient, string baseUrl)
+        // Приватный конструктор
+        private UserApiClient()
         {
-            _httpClient = httpClient;
-            _baseUrl = baseUrl.TrimEnd('/');
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5213/") // Укажите базовый URL API
+            };
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        // Глобальная точка доступа
+        public static UserApiClient Instance => _instance.Value;
+
+        // Метод для получения пользователей
+        public async Task<IEnumerable<UserDTO>> GetUsersAsync()
         {
-            var url = $"{_baseUrl}/api/users";
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync("api/users");
             response.EnsureSuccessStatusCode();
 
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<UserDTO>>(responseJson);
-        }
-
-        public async Task<UserDTO> GetUserByIdAsync(int id)
-        {
-            var url = $"{_baseUrl}/api/users/{id}";
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<UserDTO>(responseJson);
+            return await response.Content.ReadFromJsonAsync<IEnumerable<UserDTO>>();
         }
     }
+    
 }
-/*Интеграция в WPF
- * public IServiceProvider ServiceProvider { get; private set; }
-
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        var services = new ServiceCollection();
-        var baseUrl = "https://api.example.com";
-        
-        // Настройка HttpClient
-        services.AddSingleton(new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(30)
-        });
-        
-        // Регистрация API клиента
-        services.AddSingleton(provider => 
-            new UserApiClient(
-                provider.GetRequiredService<HttpClient>(),
-                baseUrl));
-        
-        // Регистрация ViewModel
-        services.AddTransient<UserViewModel>();
-        
-        ServiceProvider = services.BuildServiceProvider();
-        
-        // Создание и отображение главного окна
-        var mainWindow = new MainWindow
-        {
-            DataContext = ServiceProvider.GetRequiredService<UserViewModel>()
-        };
-        mainWindow.Show();
-    }
-*/
