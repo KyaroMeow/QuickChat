@@ -14,6 +14,7 @@
         <converters:MessageStyleConverter x:Key="MessageStyleConverter"/>
         <converters:MessageTextStyleConverter x:Key="MessageTextStyleConverter"/>
         <converters:MessageTimeStyleConverter x:Key="MessageTimeStyleConverter"/>
+        <converters:MessageStyleMultiConverter x:Key="MessageStyleMultiConverter"/>
     </Page.Resources>
 
     <Grid x:Name="RootGrid">
@@ -147,10 +148,13 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <!-- Определяем стиль сообщения в зависимости от отправителя -->
-                                    <Border Style="{Binding SenderId, 
-                        Converter={StaticResource MessageStyleConverter}, 
-                        ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
-                        Margin="8,5">
+                                    <Border Margin="8,5">
+                                        <Border.Style>
+                                            <MultiBinding Converter="{StaticResource MessageStyleMultiConverter}">
+                                                <Binding Path="SenderId"/>
+                                                <Binding Path="CurrentUserId" RelativeSource="{RelativeSource AncestorType=Page}"/>
+                                            </MultiBinding>
+                                        </Border.Style>
                                         <StackPanel>
                                             <!-- Текст сообщения -->
                                             <TextBlock Text="{Binding Text}" 

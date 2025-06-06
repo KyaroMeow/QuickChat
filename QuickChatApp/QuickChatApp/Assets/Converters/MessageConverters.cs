@@ -11,10 +11,10 @@ namespace QuickChatApp.Converters
             if (value is int senderId && parameter is int currentUserId)
             {
                 return senderId == currentUserId ?
-                    Application.Current.Resources["OutgoingMessageStyle"] :
-                    Application.Current.Resources["IncomingMessageStyle"];
+                    Application.Current.FindResource("OutgoingMessageStyle") :
+                    Application.Current.FindResource("IncomingMessageStyle");
             }
-            return Application.Current.Resources["IncomingMessageStyle"];
+            return Application.Current.FindResource("IncomingMessageStyle");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -30,10 +30,10 @@ namespace QuickChatApp.Converters
             if (value is int senderId && parameter is int currentUserId)
             {
                 return senderId == currentUserId ?
-                    Application.Current.Resources["OutgoingMessageTextStyle"] :
-                    Application.Current.Resources["MessageTextStyle"];
+                    Application.Current.FindResource("OutgoingMessageTextStyle") :
+                    Application.Current.FindResource("MessageTextStyle");
             }
-            return Application.Current.Resources["MessageTextStyle"];
+            return Application.Current.FindResource("MessageTextStyle");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -49,10 +49,10 @@ namespace QuickChatApp.Converters
             if (value is int senderId && parameter is int currentUserId)
             {
                 return senderId == currentUserId ?
-                    Application.Current.Resources["OutgoingMessageTimeStyle"] :
-                    Application.Current.Resources["MessageTimeStyle"];
+                    Application.Current.FindResource("OutgoingMessageTimeStyle") :
+                    Application.Current.FindResource("MessageTimeStyle");
             }
-            return Application.Current.Resources["MessageTimeStyle"];
+            return Application.Current.FindResource("MessageTimeStyle");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
