@@ -81,13 +81,13 @@
                     </DockPanel>
 
                     <ListBox x:Name="ChatsList" 
-                         Style="{StaticResource ChatListStyle}"
-                         ItemContainerStyle="{StaticResource ChatItemStyle}"
-                         ItemsSource="{Binding Contacts}">
+         Style="{StaticResource ChatListStyle}"
+         ItemContainerStyle="{StaticResource ChatItemStyle}"
+         ItemsSource="{Binding Contacts}"
+         SelectionChanged="ChatsList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" 
-                                            MouseLeftButtonDown="ContactItem_Click">
+                                <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="28" Height="28" Fill="{Binding AvatarColor}"/>
                                     <StackPanel Margin="10,0" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Name}" Style="{StaticResource ContactNameStyle}"/>

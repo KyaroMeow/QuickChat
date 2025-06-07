@@ -186,7 +186,16 @@ namespace QuickChatApp.Pages
                 ContactsPopup.IsOpen = false;
             }
         }
+        private void ChatsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ChatsList.SelectedItem is Contact contact)
+            {
+                CreateOrSelectChat(contact.Id);
+            }
 
+            // Сбрасываем выделение, чтобы можно было выбрать тот же чат снова
+            ChatsList.SelectedItem = null;
+        }
         // Обновленный класс Contact
         public class Contact
         {
