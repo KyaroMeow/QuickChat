@@ -14,7 +14,7 @@ namespace QuickChatApp.Converters
                     Application.Current.FindResource("OutgoingMessageStyle") :
                     Application.Current.FindResource("IncomingMessageStyle");
             }
-            return Application.Current.FindResource("IncomingMessageStyle");
+            return Application.Current.FindResource("OutgoingMessageStyle");
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
