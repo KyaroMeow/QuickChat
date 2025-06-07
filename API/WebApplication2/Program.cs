@@ -12,7 +12,7 @@ namespace WebApplication2
 
             // Add services to the container.
             builder.Services.AddDbContext<QuickChatBaseContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("QuickChatBase")));
-
+            builder.Services.AddSignalR();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -33,6 +33,7 @@ namespace WebApplication2
 
 
             app.MapControllers();
+            app.MapHub<ChatHub>("/chatHub");
 
             app.Run();
         }

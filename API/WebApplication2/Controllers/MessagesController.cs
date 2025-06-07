@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.DTO;
 using WebApplication2.Models;
@@ -10,12 +11,13 @@ namespace WebApplication2.Controllers
     public class MessagesController : ControllerBase
     {
         private readonly QuickChatBaseContext _context;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public MessagesController(QuickChatBaseContext context)
+        public MessagesController(QuickChatBaseContext context, IHubContext<ChatHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
-
 
         // GET: api/Messages/chat/5
         [HttpGet("chat/{chatId}")]
@@ -84,6 +86,7 @@ namespace WebApplication2.Controllers
 
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
+            await _hubContext.Clients.Group(messageDto.ChatId.ToString()).SendAsync("ReceiveMessage", messageDto.SenderId.ToString(), messageDto.Text);
 
             return CreatedAtAction("GetMessage", new { id = message.Id }, new MessageDTO
             {
