@@ -98,6 +98,8 @@ namespace QuickChatApp.Pages
 
                 foreach (var message in messages.OrderBy(m => m.SentAt))
                 {
+                    // Преобразуем время в локальный часовой пояс
+                    message.SentAt = ConvertToLocalTime(message.SentAt);
                     Messages.Add(message);
                 }
 
@@ -165,6 +167,9 @@ namespace QuickChatApp.Pages
                     };
 
                     var sentMessage = await MessageApiClient.Instance.SendMessageAsync(messageDto);
+
+                    // Преобразуем время в локальный часовой пояс
+                    sentMessage.SentAt = ConvertToLocalTime(sentMessage.SentAt);
                     Messages.Add(sentMessage);
 
                     MessageInput.Text = "";
@@ -295,7 +300,10 @@ namespace QuickChatApp.Pages
             SidebarPopup.IsOpen = true;
         }
 
-
+        private DateTime ConvertToLocalTime(DateTime utcTime)
+        {
+            return utcTime.ToLocalTime(); // Преобразует UTC-время в локальное время системы
+        }
 
         private void OverlayGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
