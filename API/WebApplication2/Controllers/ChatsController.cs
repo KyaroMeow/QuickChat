@@ -26,8 +26,6 @@ namespace WebApplication2.Controllers
                 .Select(c => new ChatDTO
                 {
                     Id = c.Id,
-                    Name = c.Name,
-                    IsGroup = c.Isgroup ?? false,
                     UserIds = c.Users.Select(u => u.Id).ToList()
                 })
                 .ToListAsync();
@@ -43,8 +41,6 @@ namespace WebApplication2.Controllers
 
             var chat = new Chat
             {
-                Name = chatDto.Name,
-                Isgroup = chatDto.IsGroup,
                 Users = users
             };
 
@@ -54,8 +50,6 @@ namespace WebApplication2.Controllers
             return CreatedAtAction(nameof(GetUserChats), new { userId = users.First().Id }, new ChatDTO
             {
                 Id = chat.Id,
-                Name = chat.Name,
-                IsGroup = chat.Isgroup ?? false,
                 UserIds = chat.Users.Select(u => u.Id).ToList()
             });
         }

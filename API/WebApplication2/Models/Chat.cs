@@ -7,10 +7,6 @@ public partial class Chat
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
-
-    public bool? Isgroup { get; set; }
-
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();

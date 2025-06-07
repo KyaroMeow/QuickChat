@@ -16,21 +16,77 @@ namespace WebApplication2.Controllers
             _context = context;
         }
 
+
+
         // GET: api/users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers(string? login = null)
         {
-            return await _context.Users
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(login))
+            {
+                query = query.Where(u => EF.Functions.ILike(u.Login, $"%{login}%"));
+            }
+
+            var users = await query
                 .Select(u => new UserDTO
                 {
                     Id = u.Id,
                     Login = u.Login,
                     Username = u.Username,
-                    AvatarUrl = u.Avatarurl,
+                    Avatar = u.Avatar,
                     LastOnline = u.Lastonline,
                     IsOnline = u.Isonline ?? false
                 })
                 .ToListAsync();
+
+            return Ok(users);
         }
+
+        // GET: api/users/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDTO userUpdateDto)
+        {
+            // 1. Находим пользователя в БД
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound($"Пользователь с ID {id} не найден.");
+            }
+
+            // 2. Обновляем поля (только те, что не null в DTO)
+            if (userUpdateDto.Username != null)
+            {
+                user.Username = userUpdateDto.Username;
+            }
+
+            if (userUpdateDto.Avatar != null)
+            {
+                user.Avatar = userUpdateDto.Avatar;
+            }
+
+            if (userUpdateDto.IsOnline.HasValue)
+            {
+                user.Isonline = userUpdateDto.IsOnline.Value;
+                user.Lastonline = DateTime.UtcNow; // Обновляем время последнего онлайна
+            }
+
+            // 3. Сохраняем изменения
+            try
+            {
+                await _context.SaveChangesAsync();
+                return NoContent(); // 204 No Content - успешное обновление
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Users.Any(u => u.Id == id))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+        }
+
     }
 }

@@ -13,7 +13,7 @@ public partial class User
 
     public string Passwordhash { get; set; } = null!;
 
-    public string? Avatarurl { get; set; }
+    public byte[]? Avatar { get; set; }
 
     public DateTime? Lastonline { get; set; }
 

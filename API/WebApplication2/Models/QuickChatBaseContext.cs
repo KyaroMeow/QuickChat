@@ -34,12 +34,6 @@ public partial class QuickChatBaseContext : DbContext
             entity.ToTable("chats");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Isgroup)
-                .HasDefaultValue(false)
-                .HasColumnName("isgroup");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
         });
 
         modelBuilder.Entity<Message>(entity =>
@@ -78,9 +72,9 @@ public partial class QuickChatBaseContext : DbContext
             entity.HasIndex(e => e.Login, "users_login_key").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Avatarurl)
+            entity.Property(e => e.Avatar)
                 .HasMaxLength(255)
-                .HasColumnName("avatarurl");
+                .HasColumnName("avatar");
             entity.Property(e => e.Isonline)
                 .HasDefaultValue(false)
                 .HasColumnName("isonline");

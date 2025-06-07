@@ -32,8 +32,8 @@ namespace WebApplication2.Controllers
                 Login = userDto.Login,
                 Username = userDto.Username,
                 Passwordhash = HashPassword(userDto.Password),
-                Avatarurl = userDto.AvatarUrl,
-                Isonline = true
+                Isonline = true,
+                Avatar = userDto.Avatar
             };
 
             _context.Users.Add(user);
@@ -44,8 +44,8 @@ namespace WebApplication2.Controllers
                 Id = user.Id,
                 Login = user.Login,
                 Username = user.Username,
-                AvatarUrl = user.Avatarurl,
-                IsOnline = user.Isonline ?? false
+                IsOnline = user.Isonline ?? false,
+                Avatar = user.Avatar
             });
         }
 
@@ -72,9 +72,9 @@ namespace WebApplication2.Controllers
                 Id = user.Id,
                 Login = user.Login,
                 Username = user.Username,
-                AvatarUrl = user.Avatarurl,
                 LastOnline = user.Lastonline,
-                IsOnline = user.Isonline ?? false
+                IsOnline = user.Isonline ?? false,
+                Avatar = user.Avatar
             });
         }
 

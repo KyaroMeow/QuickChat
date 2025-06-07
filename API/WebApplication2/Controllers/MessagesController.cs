@@ -16,44 +16,6 @@ namespace WebApplication2.Controllers
             _context = context;
         }
 
-        // GET: api/Messages
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessages()
-        {
-            return await _context.Messages
-                .Select(m => new MessageDTO
-                {
-                    Id = m.Id,
-                    ChatId = m.Chatid,
-                    SenderId = m.Senderid,
-                    Text = m.Text,
-                    SentAt = m.Sentat ?? DateTime.UtcNow,
-                    IsRead = m.Isread ?? false
-                })
-                .ToListAsync();
-        }
-
-        // GET: api/Messages/5`
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MessageDTO>> GetMessage(int id)
-        {
-            var message = await _context.Messages.FindAsync(id);
-
-            if (message == null)
-            {
-                return NotFound();
-            }
-
-            return new MessageDTO
-            {
-                Id = message.Id,
-                ChatId = message.Chatid,
-                SenderId = message.Senderid,
-                Text = message.Text,
-                SentAt = message.Sentat ?? DateTime.UtcNow,
-                IsRead = message.Isread ?? false
-            };
-        }
 
         // GET: api/Messages/chat/5
         [HttpGet("chat/{chatId}")]
