@@ -190,8 +190,11 @@
                                     Margin="5,0,0,0"
                                     Click="SendButton_Click"/>
                             <TextBox x:Name="MessageInput" 
-                                     Style="{StaticResource MessageInputStyle}"
-                                     Text="Введите сообщение..."/>
+         Style="{StaticResource MessageInputStyle}"
+         Text="Введите сообщение..."
+         KeyDown="MessageInput_KeyDown"
+         GotFocus="MessageInput_GotFocus"
+         LostFocus="MessageInput_LostFocus"/>
                         </DockPanel>
                     </Border>
                 </Grid>

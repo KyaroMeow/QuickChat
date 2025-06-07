@@ -145,7 +145,7 @@ namespace QuickChatApp.Pages
             }
         }
 
-        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        private async Task SendMessageAsync()
         {
             if (_currentChatId == -1)
             {
@@ -174,6 +174,22 @@ namespace QuickChatApp.Pages
                 {
                     MessageBox.Show($"Ошибка отправки сообщения: {ex.Message}");
                 }
+            }
+        }
+
+        // Обработчик кнопки
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            await SendMessageAsync();
+        }
+
+        // Обработчик TextBox (Enter)
+        private async void MessageInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && Keyboard.Modifiers != ModifierKeys.Shift)
+            {
+                await SendMessageAsync();
+                e.Handled = true;
             }
         }
 
