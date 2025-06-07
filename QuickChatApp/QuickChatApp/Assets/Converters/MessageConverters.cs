@@ -23,25 +23,24 @@ namespace QuickChatApp.Converters
         }
     }
 
-    public class MessageTextStyleConverter : IMultiValueConverter
-	{
-		public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-			if (values.Length >= 2 && values[0] is int senderId && values[1] is int currentUserId)
-			{
-				return senderId == currentUserId
-					? Application.Current.FindResource("OutgoingMessageTextStyle")
-					: Application.Current.FindResource("MessageTextStyle");
-			}
+    public class MessageTextStyleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is int senderId && parameter is int currentUserId)
+            {
+                return senderId == currentUserId ?
+                    Application.Current.FindResource("OutgoingMessageTextStyle") :
+                    Application.Current.FindResource("MessageTextStyle");
+            }
+            return Application.Current.FindResource("MessageTextStyle");
+        }
 
-			return Application.Current.FindResource("MessageTextStyle");
-		}
-
-		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public class MessageTimeStyleConverter : IValueConverter
     {

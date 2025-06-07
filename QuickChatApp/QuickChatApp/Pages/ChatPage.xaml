@@ -81,10 +81,10 @@
                     </DockPanel>
 
                     <ListBox x:Name="ChatsList" 
-                         Style="{StaticResource ChatListStyle}"
-                         ItemContainerStyle="{StaticResource ChatItemStyle}"
-                         ItemsSource="{Binding Contacts}"
-                         SelectionChanged="ChatsList_SelectionChanged">
+         Style="{StaticResource ChatListStyle}"
+         ItemContainerStyle="{StaticResource ChatItemStyle}"
+         ItemsSource="{Binding Contacts}"
+         SelectionChanged="ChatsList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -140,11 +140,11 @@
                     <!-- Messages Area -->
                     <!-- Messages Area -->
                     <ScrollViewer Grid.Row="1" 
-                              Style="{StaticResource MessagesScrollViewerStyle}"
-                              x:Name="MessagesScrollViewer">
+              Style="{StaticResource MessagesScrollViewerStyle}"
+              x:Name="MessagesScrollViewer">
                         <ItemsControl x:Name="MessagesPanel" 
-                              ItemsSource="{Binding Messages}"
-                              Margin="2">
+                  ItemsSource="{Binding Messages}"
+                  Margin="2">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <!-- Определяем стиль сообщения в зависимости от отправителя -->
@@ -157,21 +157,20 @@
                                         </Border.Style>
                                         <StackPanel>
                                             <!-- Текст сообщения -->
-                                            <TextBlock Text="{Binding Text}"  
-                                                      Style="{Binding SenderId,  
-                                                      Converter={StaticResource MessageTextStyleConverter},  
-                                                      ConverterParameter={Binding CurrentUserId, RelativeSource={RelativeSource AncestorType=Page}}}"  
-                                                      TextWrapping="Wrap"  
-                                                      MaxWidth="350"/>
+                                            <TextBlock Text="{Binding Text}" 
+                                   Style="{Binding SenderId, 
+                                          Converter={StaticResource MessageTextStyleConverter}, 
+                                          ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="350"/>
 
                                             <!-- Время сообщения -->
                                             <TextBlock Text="{Binding SentAt, StringFormat=HH:mm}" 
-                                                       Style="{Binding SenderId, 
-                                                       Converter={StaticResource MessageTimeStyleConverter}, 
-                                                       ConverterParameter={Binding CurrentUserId, RelativeSource={RelativeSource AncestorType=Page}}}"
-                                                       HorizontalAlignment="Right"
-                                                       Margin="0,5,0,0"/>
-
+                                   Style="{Binding SenderId, 
+                                          Converter={StaticResource MessageTimeStyleConverter}, 
+                                          ConverterParameter={x:Static local:ChatPage.CurrentUserIdProperty}}"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,5,0,0"/>
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>
