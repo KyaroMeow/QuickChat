@@ -21,22 +21,6 @@ namespace QuickChatApp.WorkAPI
             };
         }
 
-        // Получение всех сообщений
-        public async Task<List<MessageDTO>> GetAllMessagesAsync()
-        {
-            var response = await _httpClient.GetAsync("api/Messages");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<MessageDTO>>();
-        }
-
-        // Получение сообщения по ID
-        public async Task<MessageDTO> GetMessageAsync(int id)
-        {
-            var response = await _httpClient.GetAsync($"api/Messages/{id}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<MessageDTO>();
-        }
-
         // Получение сообщений чата
         public async Task<List<MessageDTO>> GetChatMessagesAsync(int chatId)
         {

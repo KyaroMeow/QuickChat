@@ -19,12 +19,13 @@ namespace QuickChatApp.Pages
         public ObservableCollection<MessageDTO> Messages { get; set; }
         private UserDTO _currentUser;
         private int _currentChatId = -1; // Текущий выбранный чат
-        
+        private ChatHubConnection chatHubConnection;
         public static readonly DependencyProperty CurrentUserIdProperty =
         DependencyProperty.Register("CurrentUserId", typeof(int), typeof(ChatPage));
         public ChatPage(UserDTO currentUser)
         {
             InitializeComponent();
+            chatHubConnection = new ChatHubConnection("http://localhost:5213/chatHub");
             Contacts = new ObservableCollection<Contact>();
             Messages = new ObservableCollection<MessageDTO>();
             _currentUser = currentUser;
@@ -33,6 +34,7 @@ namespace QuickChatApp.Pages
             CurrentUserId = _currentUser.Id;
 
             DataContext = this;
+            chatHubConnection.StartAsync();
             LoadContactsAsync();
 
             MessageInput.GotFocus += MessageInput_GotFocus;
@@ -42,7 +44,7 @@ namespace QuickChatApp.Pages
         public int CurrentUserId
         {
             get { return (int)GetValue(CurrentUserIdProperty); }
-            set { SetValue(CurrentUserIdProperty, value); }
+            set { SetValue(CurrentUserIdProperty, value);}
         }
 
         private async void LoadContactsAsync()
@@ -50,13 +52,18 @@ namespace QuickChatApp.Pages
             try
             {
                 // Получаем список пользователей (контактов) через API
-                var users = await UserApiClient.Instance.GetUsersAsync();
-
-                // Исключаем текущего пользователя из списка контактов
-                var contacts = users.Where(u => u.Id != _currentUser.Id).ToList();
-
+                var chats = await ChatApiClient.Instance.GetUserChatsAsync(CurrentUserId);
+                var allUserIds = chats
+            .SelectMany(chat => chat.UserIds)
+            .Distinct()
+            .Where(id => id != CurrentUserId)
+            .ToList();
+                var chatIds = chats.Select(c => c.Id).ToList();
+                chatHubConnection.JoinAllUserChatsAsync(chatIds);
+                var users = await UserApiClient.Instance.GetUsersByIdsAsync(allUserIds);
+                
                 Contacts.Clear();
-                foreach (var contact in contacts)
+                foreach (var contact in users)
                 {
                     Contacts.Add(new Contact
                     {
@@ -74,6 +81,7 @@ namespace QuickChatApp.Pages
             }
         }
 
+      
         private Brush GetRandomColorBrush()
         {
             var colors = new[]
@@ -117,7 +125,7 @@ namespace QuickChatApp.Pages
                 // Проверяем, есть ли уже чат с этим пользователем
                 var userChats = await ChatApiClient.Instance.GetUserChatsAsync(_currentUser.Id);
                 var existingChat = userChats.FirstOrDefault(c =>
-                    !c.IsGroup && c.UserIds.Contains(contactId));
+                     c.UserIds.Contains(contactId));
 
                 if (existingChat != null)
                 {
@@ -130,8 +138,6 @@ namespace QuickChatApp.Pages
                     // Создаем новый чат
                     var newChat = await ChatApiClient.Instance.CreateChatAsync(new ChatCreateDTO
                     {
-                        Name = $"{_currentUser.Username} и {Contacts.First(c => c.Id == contactId).Name}",
-                        IsGroup = false,
                         UserIds = new List<int> { _currentUser.Id, contactId }
                     });
 

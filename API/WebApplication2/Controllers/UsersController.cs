@@ -44,6 +44,33 @@ namespace WebApplication2.Controllers
             return Ok(users);
         }
 
+        // GET: api/users
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(int id)
+        {
+            // Поиск пользователя по идентификатору
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                // Если пользователь не найден, возвращаем 404 Not Found
+                return NotFound();
+            }
+
+            // Преобразование сущности в DTO
+            var userDto = new UserDTO
+            {
+                Id = user.Id,
+                Login = user.Login,
+                Username = user.Username,
+                Avatar = user.Avatar,
+                LastOnline = user.Lastonline,
+                IsOnline = user.Isonline ?? false
+            };
+
+            // Возвращаем пользователя в виде 200 OK
+            return Ok(userDto);
+        }
+
         // GET: api/users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDTO userUpdateDto)

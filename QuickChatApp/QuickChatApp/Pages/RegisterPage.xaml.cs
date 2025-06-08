@@ -12,7 +12,6 @@ namespace QuickChatApp.Pages
     /// </summary>
     public partial class RegisterPage : Page
     {
-        private string _avatarUrl = "/Assets/Images/icon.png"; // Путь к аватару по умолчанию
         public RegisterPage()
         {
             InitializeComponent();
@@ -68,8 +67,7 @@ namespace QuickChatApp.Pages
                 {
                     Username = NameBox.Text,
                     Login = LoginBox.Text,
-                    Password = AuthApiClient.HashPassword(PasswordBox.Password),
-                    AvatarUrl = _avatarUrl
+                    Password = AuthApiClient.HashPassword(PasswordBox.Password)
                 };
 
                 // Вызов API для регистрации

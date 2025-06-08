@@ -13,6 +13,7 @@ namespace WebApplication2
         // Пример метода для присоединения к группе
         public async Task JoinGroup(string groupName)
         {
+
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("ReceiveMessage", "Server", $"{Context.UserIdentifier} joined {groupName}");
         }
